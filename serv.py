@@ -33,6 +33,38 @@ def col2df():
   js= conc.to_json(orient="index")
   return(js)
 
+# route recive json y consolida suma
+@app.route('/consolidate', methods=['POST'])##
+@cross_origin()
+# route function
+def ToDfObjD3():
+  dic = request.get_json()
+  listDF = []
+  for i in range(len(dic)):
+    a = pd.unique(dic[i].get('genes'))
+    colname = dic[i].get('author')
+    df2=pd.DataFrame(a, columns=['AGI'])
+    df3 = df2[df2.iloc[:, 0].notna()].set_index('AGI').assign(**{colname:1})
+    listDF.append(df3)
+  conc= pd.concat(listDF, axis=1, ignore_index=False).fillna(0)
+  conc.rename_axis('genes', inplace=True)
+  conc.loc[:,'Total'] = conc.sum(axis=1)
+  ##js= conc.to_json(orient='records')## to_dict
+  df= conc.T
+  listDFs = []
+  for i in range(len(df.columns)):
+    ndic ={}
+    colname = df.columns[i]
+    a = df[colname].to_dict()
+    ndic['genes'] = colname
+    ndic['author'] = a
+    ndic['id'] = random.randint(1, 10000)
+    listDFs.append(ndic)
+  jslis= json.dumps(listDFs)
+  return jslis
+
+
+
 # route
 @app.route('/file')##
 @cross_origin()
@@ -63,7 +95,7 @@ def routineDF(df):
     a = df[colname].dropna().str.replace(' ', '').unique().tolist()
     ndic['author'] = colname
     ndic['genes'] = a
-    ndic['id'] = random.randint(1, 1000)
+    ndic['id'] = random.randint(1, 10000)
     listDF.append(ndic)
   jslis= json.dumps(listDF)
   return jslis

@@ -11,7 +11,7 @@ export const NameContext = createContext();
 function App() {
   const [initial, setInitial] = useState([]);
 
-  const processRaw = (response) => {
+  /*   const processRaw = (response) => {
     var result = Object.keys(response).map(function (key) {
       return { gene: key, author: response[key] };
     });
@@ -26,15 +26,27 @@ function App() {
     });
 
     return tuu;
-  };
+  }; */
 
-  const fetchD = async () => {
+  /*   const fetchD = async () => {
     try {
       const data = await fetch("http://127.0.0.1:5000/file");
       const response = await data.json();
       var result = processRaw(response);
 
       setInitial(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }; */
+
+  const fetchD = async () => {
+    try {
+      const data = await fetch("http://127.0.0.1:5000/lists");
+      const response = await data.json();
+      /* var result = processRaw(response); */
+
+      setInitial(response);
     } catch (error) {
       console.log(error);
     }
