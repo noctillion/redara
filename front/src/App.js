@@ -10,6 +10,15 @@ export const NameContext = createContext();
 
 function App() {
   const [initial, setInitial] = useState([]);
+  const [clicked, setClicked] = useState(false);
+  const [consolidated, setConsolidated] = useState([]);
+  console.log(consolidated);
+  let setDataToProviderClicked = (forState) => {
+    setClicked(forState);
+  };
+  let setDataToProviderConsolidated = (forState) => {
+    setConsolidated(forState);
+  };
 
   /*   const processRaw = (response) => {
     var result = Object.keys(response).map(function (key) {
@@ -60,6 +69,10 @@ function App() {
     <NameContext.Provider
       value={{
         initial,
+        clicked,
+        consolidated,
+        setDataToProviderClicked: setDataToProviderClicked,
+        setDataToProviderConsolidated: setDataToProviderConsolidated,
       }}
     >
       <Router>

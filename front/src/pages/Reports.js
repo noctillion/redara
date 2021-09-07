@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 /* import { Link } from "react-router-dom"; */
 import * as AiIcons from "react-icons/ai";
+import { useHistory } from "react-router-dom";
 
 import { NameContext } from "../App";
 import FileUpload from "../components/fileupload/FileUpload";
@@ -163,21 +164,25 @@ export const Reports = () => {
 
 export const ReportsOne = () => {
   //const [authors, setAuthors] = useState([]);
-  const { initial } = useContext(NameContext);
+  const { initial, setDataToProviderClicked, setDataToProviderConsolidated } =
+    useContext(NameContext);
   const [newData, setNewData] = useState([]);
   const [newInitialHold, setNewInitialHold] = useState([]);
-
   const [locInitial, setlocInitial] = useState([]);
   const [initialHold, setInitialHold] = useState([]);
 
-  const [clicked, setClicked] = useState(!false);
-
-  const [consolidate, setConsolidate] = useState([]);
-  console.log(typeof consolidate, "consolidate");
+  //const [consolidate, setConsolidate] = useState([]);
 
   //console.log(authors, "author");
-  /*   console.log(locInitial, "locInitial");
+  /* console.log(locInitial, "locInitial");
   console.log(initialHold, "initialhold"); */
+
+  const history = useHistory();
+
+  const routeChange = () => {
+    let path = `/lists/lists2`;
+    history.push(path);
+  };
 
   useEffect(() => {
     setlocInitial(initial);
@@ -254,13 +259,13 @@ export const ReportsOne = () => {
     }).then((res) => res.json());
     /* .then((res) => console.log(res)); */
     const response = res;
-    console.log(response);
+    setDataToProviderConsolidated(response);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(newUserInfo);
-    setClicked(false);
+    setDataToProviderClicked(true);
     //logic to create new user...
   };
 
@@ -312,8 +317,19 @@ export const ReportsOne = () => {
 
   const consolidateLists = () => {
     const carray = locInitial.concat(newData);
-    setConsolidate(carray);
-    onConsolidate(carray);
+
+    const dede = carray.map((elem) => {
+      return elem.author;
+    });
+
+    const unuq = dede.filter((x, i, a) => a.indexOf(x) === i);
+
+    if (dede.length === unuq.length) {
+      onConsolidate(carray);
+      routeChange();
+    } else {
+      return console.log("repeated cols");
+    }
   };
 
   /* const listOut = (val) => { */
@@ -431,7 +447,6 @@ export const ReportsOne = () => {
                   label=""
                   show={newData.length}
                   funct={handleSubmit}
-                  menu={clicked}
                   /* multiple */
                   updateFilesCb={updateUploadedFiles}
                 />

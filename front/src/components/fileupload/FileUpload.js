@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import * as AiIcons from "react-icons/ai";
 import * as IoIcons from "react-icons/io";
 import styled from "styled-components";
+import { NameContext } from "../../App";
 //import usePrevious from "../../hooks/usePrevious";
 import {
   FileUploadContainer,
@@ -53,15 +54,15 @@ const FileUpload = ({
   updateFilesCb,
   funct,
   show,
-  menu,
   maxFileSizeInBytes = DEFAULT_MAX_FILE_SIZE_IN_BYTES,
   ...otherProps
 }) => {
   const fileInputField = useRef(null);
   const [files, setFiles] = useState({});
-  console.log(show, "show");
+  const { clicked, setDataToProviderClicked } = useContext(NameContext);
   const handleUploadBtnClick = () => {
     fileInputField.current.click();
+    setDataToProviderClicked(false);
   };
 
   //const prevCount = usePrevious(menu);
@@ -129,7 +130,7 @@ const FileUpload = ({
         />
       </FileUploadContainer>
 
-      {Object.keys(files).length === 0 ? null : (
+      {Object.keys(files).length === 0 || clicked === true ? null : (
         <>
           <FilePreviewContainer>
             <span
@@ -145,6 +146,7 @@ const FileUpload = ({
               {Object.keys(files).map((fileName, index) => {
                 let file = files[fileName];
                 let isImageFile = file.type.split("/")[0] === "image";
+
                 return (
                   <PreviewContainer key={fileName}>
                     <div>
