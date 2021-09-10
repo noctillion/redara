@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+/* import { Link } from "react-router-dom"; */
 import * as AiIcons from "react-icons/ai";
-
+import Chartbasic from "../components/chartbasic/chartbasic";
+import { useHistory } from "react-router-dom";
 import { NameContext } from "../App";
 import FileUpload from "../components/fileupload/FileUpload";
+import ScatterBasic from "../components/scatterbasic/scatter";
+import Heatmapchart from "../components/heatmapbasic/heatmapchart";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -55,7 +58,7 @@ const CardCont = styled.div`
   }
 `;
 
-const CloseX = styled(Link)`
+const CloseX = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -67,6 +70,10 @@ const CloseX = styled(Link)`
   background-color: red;
   color: white;
   border-radius: 3px;
+  cursor: pointer;
+  &:hover {
+    background-color: #bd0d19;
+  }
 `;
 
 const ListUpMenu = styled.div`
@@ -143,6 +150,36 @@ const MainButton = styled.span`
   }
 `;
 
+const ChartCont = styled.div`
+  display: flex;
+  width: 600px;
+  height: 400px;
+  font-size: 1rem;
+  justify-content: space-between;
+  border: 1px solid red;
+  /*   margin-left: 5vw;
+  margin-right: 5vw; */
+  @media (max-width: 768px) {
+    width: 400px;
+    height: 300px;
+    justify-content: center;
+    margin: 0;
+    //width: 100%;
+  }
+`;
+
+/* const GraphCont = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    //width: 100%;
+  }
+`; */
+
 export const Reports = () => {
   return (
     <div className="reports">
@@ -158,13 +195,36 @@ export const Reports = () => {
 };
 
 export const ReportsOne = () => {
-  const [authors, setAuthors] = useState([]);
-  const { initial } = useContext(NameContext);
+  //const [authors, setAuthors] = useState([]);
+  const {
+    initial,
+    setDataToProviderClicked,
+    setDataToProviderConsolidated,
+    setDataToProviderMds,
+  } = useContext(NameContext);
   const [newData, setNewData] = useState([]);
-  console.log(authors, "author");
-  console.log(newData, "newdataa");
+  const [newInitialHold, setNewInitialHold] = useState([]);
+  const [locInitial, setlocInitial] = useState([]);
+  const [initialHold, setInitialHold] = useState([]);
 
-  const sumArr = (array) => {
+  //const [consolidate, setConsolidate] = useState([]);
+
+  //console.log(authors, "author");
+  /* console.log(locInitial, "locInitial");
+  console.log(initialHold, "initialhold"); */
+
+  const history = useHistory();
+
+  const routeChange = () => {
+    let path = `/lists/lists2`;
+    history.push(path);
+  };
+
+  useEffect(() => {
+    setlocInitial(initial);
+  }, [initial]);
+
+  /*   const sumArr = (array) => {
     const red = array.map((object) => {
       const autor = object.autor;
       return autor;
@@ -195,8 +255,7 @@ export const ReportsOne = () => {
   useEffect(() => {
     let res = sumArr(initial);
     setAuthors(res);
-    /* console.log(res, "res"); */
-  }, [initial]);
+  }, [initial]); */
 
   const [newUserInfo, setNewUserInfo] = useState({
     profileImages: [],
@@ -208,8 +267,6 @@ export const ReportsOne = () => {
   const onSubmit = async (data) => {
     const formData = new FormData();
     formData.append("file", data.profileImages[0]);
-
-    console.log(formData, "formd");
     const res = await fetch("http://localhost:5000/lists", {
       method: "POST",
       body: formData,
@@ -217,6 +274,7 @@ export const ReportsOne = () => {
 
     const response = res;
     setNewData(response);
+    setNewInitialHold([]);
     /*       const result = processRaw(response);
       console.log(result);
       setUploaded(result); */
@@ -226,11 +284,123 @@ export const ReportsOne = () => {
       }); */
   };
 
+  const onConsolidate = async (data) => {
+    const res = await fetch("http://localhost:5000/consolidate", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    /* .then((res) => console.log(res)); */
+    const response = res;
+    setDataToProviderConsolidated(response);
+  };
+
+  const onMDS = async (data) => {
+    const res = await fetch("http://localhost:5000/listsmds", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    /* .then((res) => console.log(res)); */
+    const response = res;
+    setDataToProviderMds(response);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(newUserInfo);
+    setDataToProviderClicked(true);
     //logic to create new user...
   };
+
+  const listOut = (val) => {
+    let dss = locInitial.filter((elem) => {
+      return elem.author !== val;
+    });
+
+    let dssu = locInitial.filter((elem) => {
+      return elem.author === val;
+    });
+    setlocInitial(dss);
+    setInitialHold(initialHold.concat(dssu));
+  };
+
+  const listIn = (val) => {
+    let dss = initialHold.filter((elem) => {
+      return elem.author !== val;
+    });
+    let dssu = initialHold.filter((elem) => {
+      return elem.author === val;
+    });
+    setlocInitial(locInitial.concat(dssu));
+    setInitialHold(dss);
+  };
+
+  const newlistOut = (val) => {
+    let dss = newData.filter((elem) => {
+      return elem.author !== val;
+    });
+
+    let dssu = newData.filter((elem) => {
+      return elem.author === val;
+    });
+    setNewData(dss);
+    setNewInitialHold(newInitialHold.concat(dssu));
+  };
+
+  const newlistIn = (val) => {
+    let dss = newInitialHold.filter((elem) => {
+      return elem.author !== val;
+    });
+    let dssu = newInitialHold.filter((elem) => {
+      return elem.author === val;
+    });
+    setNewData(newData.concat(dssu));
+    setNewInitialHold(dss);
+  };
+
+  const consolidateLists = () => {
+    const carray = locInitial.concat(newData);
+
+    const dede = carray.map((elem) => {
+      return elem.author;
+    });
+
+    const unuq = dede.filter((x, i, a) => a.indexOf(x) === i);
+
+    if (dede.length === unuq.length) {
+      onConsolidate(carray);
+      onMDS(carray);
+      routeChange();
+    } else {
+      return console.log("repeated cols");
+    }
+  };
+
+  /* const listOut = (val) => { */
+  /*     const filter = (category) =>{
+      if(category === 'All'){
+          setMenuItems(projects)
+          return;
+      } */
+  /*     var filtArr = [];
+    locInitial.filter((item) => {
+
+      return item.author.forEach((value) => {
+        if (value === val) {
+          filtArr.push(item);
+        }
+      });
+    });
+
+    setInitialHold(filtArr);
+  }; */
 
   /*  useEffect(() => {
     let resA = sumArr(newData);
@@ -244,12 +414,16 @@ export const ReportsOne = () => {
         <ListUpTitle>Redox-related lists</ListUpTitle>
         <ListSection>
           <ListUpMenu>
-            <SmallAuth>Burrows_2012</SmallAuth>
-            <SmallAuth>Marura_2012</SmallAuth>
-            <SmallAuth>Mra_2012</SmallAuth>
+            {initialHold.map((elem) => {
+              return (
+                <SmallAuth key={elem.id} onClick={() => listIn(elem.author)}>
+                  {elem.author}
+                </SmallAuth>
+              );
+            })}
           </ListUpMenu>
           {/*   <h1>Reports/reports1</h1> */}
-          {authors.map((aut) => {
+          {locInitial.map((aut) => {
             return (
               <CardCont key={aut.id}>
                 <div>
@@ -258,14 +432,14 @@ export const ReportsOne = () => {
                 </div>
                 <div>
                   <span>AGI Number: </span>
-                  {aut.sum}
+                  {aut.genes.length}
                 </div>
                 <div>
                   <span>Pubmed: </span>
                   Link
                 </div>
 
-                <CloseX to="#">
+                <CloseX onClick={() => listOut(aut.author)}>
                   <AiIcons.AiOutlineClose />
                 </CloseX>
               </CardCont>
@@ -279,9 +453,16 @@ export const ReportsOne = () => {
           {newData.length > 0 ? (
             <>
               <ListUpMenu>
-                <SmallAuth>Burrows_2012</SmallAuth>
-                <SmallAuth>Marura_2012</SmallAuth>
-                <SmallAuth>Mra_2012</SmallAuth>
+                {newInitialHold.map((elem) => {
+                  return (
+                    <SmallAuth
+                      key={elem.id}
+                      onClick={() => newlistIn(elem.author)}
+                    >
+                      {elem.author}
+                    </SmallAuth>
+                  );
+                })}
               </ListUpMenu>
               {/*   <h1>Reports/reports1</h1> */}
               {newData.map((aut) => {
@@ -300,7 +481,7 @@ export const ReportsOne = () => {
                       Link
                     </div>
 
-                    <CloseX to="#">
+                    <CloseX onClick={() => newlistOut(aut.author)}>
                       <AiIcons.AiOutlineClose />
                     </CloseX>
                   </CardCont>
@@ -315,11 +496,13 @@ export const ReportsOne = () => {
                 <FileUpload
                   accept=".csv"
                   label=""
+                  show={newData.length}
+                  funct={handleSubmit}
                   /* multiple */
                   updateFilesCb={updateUploadedFiles}
                 />
                 {/* <button type="submit">Create New User</button> */}
-                <MainButton onClick={handleSubmit}>Submit</MainButton>
+                {/* <MainButton onClick={handleSubmit}>Submit</MainButton> */}
               </form>
             </div>
           </FileUpCont>
@@ -353,15 +536,92 @@ export const ReportsOne = () => {
           })} */}
         </ListSection>
       </ListSectionCont>
+      <ListSectionCont>
+        <ListUpTitle>Consolidate lists</ListUpTitle>
+        <ListSection style={{ justifyContent: "center" }}>
+          <MainButton onClick={consolidateLists}>
+            <span style={{ marginLeft: "10px", marginRight: "10px" }}>
+              Consolidate
+            </span>
+          </MainButton>
+        </ListSection>
+        <ListUpTitle />
+      </ListSectionCont>
     </>
   );
 };
 
 export const ReportsTwo = () => {
+  const { consolidated, mds } = useContext(NameContext);
+  const [groupB, setGroupB] = useState([]);
+
+  /*   const data = [
+    { x: 0.0, y: -4.0, z: 200 },
+    { x: -0.333333, y: 4.0, z: 260 },
+    { x: 0.333333, y: -0.0, z: 400 },
+  ]; */
+
+  const groupBy = (objectArray, property) => {
+    const vad = objectArray.reduce(function (acc, obj) {
+      var key = obj[property];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
+    ////
+    const te = Object.entries(vad).map((elem) =>
+      Object.fromEntries(
+        new Map(
+          Object.entries({
+            overlist: parseInt(elem[0]),
+            size: elem[1].length,
+            genes: elem[1],
+          })
+        )
+      )
+    );
+    return te;
+  };
+
+  useEffect(() => {
+    const hh = groupBy(consolidated, "total");
+    setGroupB(hh);
+  }, [consolidated]);
+
+  /*   const te = Object.entries(hh).map((elem) =>
+    Object.fromEntries(
+      new Map(
+        Object.entries({
+          overlist: elem[0],
+          size: elem[1].length,
+          //genes: elem[1],
+        })
+      )
+    )
+  ); */
+
   return (
-    <div className="reports">
-      <h1>Reports/reports2</h1>
-    </div>
+    <>
+      <ListSectionCont>
+        <ListUpTitle />
+        <ListUpTitle>Redox-related lists</ListUpTitle>
+        <ListSection style={{ justifyContent: "space-around" }}>
+          <ChartCont>
+            <Chartbasic className="chartbasis" data={groupB} />
+          </ChartCont>
+          <ChartCont>
+            <ScatterBasic data={mds} />
+          </ChartCont>
+        </ListSection>
+      </ListSectionCont>
+      <ListSectionCont>
+        <ListSection>
+          <Heatmapchart />
+        </ListSection>
+      </ListSectionCont>
+    </>
   );
 };
 

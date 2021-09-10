@@ -6,7 +6,10 @@ from flask_cors import CORS, cross_origin
 import numpy as np
 import pandas as pd
 import json
-import random
+##import random
+import uuid
+from sklearn.metrics.pairwise import pairwise_distances
+import skbio
 
 
 app = Flask(__name__)
@@ -28,10 +31,46 @@ def col2df():
     df2=pd.DataFrame(a, columns=['AGI'])
     df3 = df2[df2.iloc[:, 0].notna()].set_index('AGI').assign(**{colname:1})
     listDF.append(df3)
-  conc= pd.concat(listDF, axis=1, ignore_index=False).fillna(0)
+  conc = pd.concat(listDF, axis=1, ignore_index=False).fillna(0)
   conc.loc[:,'Total'] = conc.sum(axis=1)
   js= conc.to_json(orient="index")
   return(js)
+
+# route recive json y consolida suma
+@app.route('/consolidate', methods=['POST'])##
+@cross_origin()
+# route function
+def ToDfObjD3():
+  dic = request.get_json()
+  listDF = []
+  for i in range(len(dic)):
+    a = pd.unique(dic[i].get('genes'))
+    colname = dic[i].get('author')
+    df2=pd.DataFrame(a, columns=['AGI'])
+    df3 = df2[df2.iloc[:, 0].notna()].set_index('AGI').assign(**{colname:1})
+    listDF.append(df3)
+  conc= pd.concat(listDF, axis=1, ignore_index=False).fillna(0)
+  conc.rename_axis('genes', inplace=True)
+  conc.loc[:,'Total'] = conc.sum(axis=1)
+  ##js= conc.to_json(orient='records')## to_dict
+  df= conc.T
+  listDFs = []
+  for i in range(len(df.columns)):
+    ndic ={}
+    colname = df.columns[i]
+    a = df[colname].to_dict()
+    ndic['genes'] = colname
+    ndic['total'] = a['Total']
+    ndic['author'] = a
+    ndic['id'] = str(uuid.uuid4())
+    for k in list(ndic['author']):
+      if k == 'Total':
+        del ndic['author'][k]
+    listDFs.append(ndic)
+  jslis= json.dumps(listDFs)
+  return jslis
+
+
 
 # route
 @app.route('/file')##
@@ -63,7 +102,7 @@ def routineDF(df):
     a = df[colname].dropna().str.replace(' ', '').unique().tolist()
     ndic['author'] = colname
     ndic['genes'] = a
-    ndic['id'] = random.randint(1, 1000)
+    ndic['id'] = str(uuid.uuid4())
     listDF.append(ndic)
   jslis= json.dumps(listDF)
   return jslis
@@ -110,6 +149,45 @@ def col2dfeWs():
     listDF.append(ndic)
   jslis= json.dumps(listDF)
   return jslis
+
+#### MCD
+
+def ToDfObj(dic):
+  listDF = []
+  for i in range(len(dic)):
+    a = pd.unique(dic[i].get('genes'))
+    colname = dic[i].get('author')
+    df2=pd.DataFrame(a, columns=['AGI'])
+    df3 = df2[df2.iloc[:, 0].notna()].set_index('AGI').assign(**{colname:1})
+    listDF.append(df3)
+  conc= pd.concat(listDF, axis=1, ignore_index=False).fillna(0)
+  conc.rename_axis('genes', inplace=True)
+  conc.loc[:,'Total'] = conc.sum(axis=1)
+  js= conc.to_json(orient='records')## to_dict
+  return(conc)
+
+
+# route
+@app.route('/listsmds', methods=['POST'])##
+@cross_origin()
+# route function
+def MDSJac():
+  ndict = request.get_json()
+  ty=ToDfObj(ndict)
+  fj=ty.loc[:, ty.columns != 'Total']
+  jac_sim = pairwise_distances(fj.T, metric = "hamming")
+  jac_sim = pd.DataFrame(jac_sim, index=fj.columns, columns=fj.columns)
+  my_pcoa = skbio.stats.ordination.pcoa(jac_sim.values)
+  # Show the new coordinates for our cities
+  pc= my_pcoa.samples[['PC1', 'PC2']].astype(float)
+  pc.reset_index(level=0, inplace=True)
+  newdf=jac_sim.columns.to_frame().reset_index(drop=True).rename({0: "author"}, axis=1)
+  newdf.reset_index(level=0, inplace=True)
+  results = pd.concat([newdf, pc], ignore_index=False, sort=False, axis=1)##este
+  results.drop(results.columns[[0]], axis=1, inplace=True)##este
+  jsc = results.to_dict(orient = 'records')##este
+  jslis= json.dumps(jsc)
+  return(jslis)
 
 
 

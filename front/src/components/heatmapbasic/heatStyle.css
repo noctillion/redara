@@ -1,0 +1,17 @@
+#container {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-content: center;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  font-size: 2.5em;
+}
+
+#tooltip {
+  padding: 5px 15px;
+  background-color: white;
+  box-shadow: 3px 3px 5px black;
+}
