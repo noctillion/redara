@@ -2,10 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 /* import { Link } from "react-router-dom"; */
 import * as AiIcons from "react-icons/ai";
+import Chartbasic from "../components/chartbasic/chartbasic";
 import { useHistory } from "react-router-dom";
-
 import { NameContext } from "../App";
 import FileUpload from "../components/fileupload/FileUpload";
+import ScatterBasic from "../components/scatterbasic/scatter";
+import Heatmapchart from "../components/heatmapbasic/heatmapchart";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -148,6 +150,36 @@ const MainButton = styled.span`
   }
 `;
 
+const ChartCont = styled.div`
+  display: flex;
+  width: 600px;
+  height: 400px;
+  font-size: 1rem;
+  justify-content: space-between;
+  border: 1px solid red;
+  /*   margin-left: 5vw;
+  margin-right: 5vw; */
+  @media (max-width: 768px) {
+    width: 400px;
+    height: 300px;
+    justify-content: center;
+    margin: 0;
+    //width: 100%;
+  }
+`;
+
+/* const GraphCont = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  @media (max-width: 768px) {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    //width: 100%;
+  }
+`; */
+
 export const Reports = () => {
   return (
     <div className="reports">
@@ -164,8 +196,12 @@ export const Reports = () => {
 
 export const ReportsOne = () => {
   //const [authors, setAuthors] = useState([]);
-  const { initial, setDataToProviderClicked, setDataToProviderConsolidated } =
-    useContext(NameContext);
+  const {
+    initial,
+    setDataToProviderClicked,
+    setDataToProviderConsolidated,
+    setDataToProviderMds,
+  } = useContext(NameContext);
   const [newData, setNewData] = useState([]);
   const [newInitialHold, setNewInitialHold] = useState([]);
   const [locInitial, setlocInitial] = useState([]);
@@ -262,6 +298,20 @@ export const ReportsOne = () => {
     setDataToProviderConsolidated(response);
   };
 
+  const onMDS = async (data) => {
+    const res = await fetch("http://localhost:5000/listsmds", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    /* .then((res) => console.log(res)); */
+    const response = res;
+    setDataToProviderMds(response);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(newUserInfo);
@@ -326,6 +376,7 @@ export const ReportsOne = () => {
 
     if (dede.length === unuq.length) {
       onConsolidate(carray);
+      onMDS(carray);
       routeChange();
     } else {
       return console.log("repeated cols");
@@ -487,19 +538,90 @@ export const ReportsOne = () => {
       </ListSectionCont>
       <ListSectionCont>
         <ListUpTitle>Consolidate lists</ListUpTitle>
-        <ListSection>
-          <MainButton onClick={consolidateLists}>Consolidate lists</MainButton>
+        <ListSection style={{ justifyContent: "center" }}>
+          <MainButton onClick={consolidateLists}>
+            <span style={{ marginLeft: "10px", marginRight: "10px" }}>
+              Consolidate
+            </span>
+          </MainButton>
         </ListSection>
+        <ListUpTitle />
       </ListSectionCont>
     </>
   );
 };
 
 export const ReportsTwo = () => {
+  const { consolidated, mds } = useContext(NameContext);
+  const [groupB, setGroupB] = useState([]);
+
+  /*   const data = [
+    { x: 0.0, y: -4.0, z: 200 },
+    { x: -0.333333, y: 4.0, z: 260 },
+    { x: 0.333333, y: -0.0, z: 400 },
+  ]; */
+
+  const groupBy = (objectArray, property) => {
+    const vad = objectArray.reduce(function (acc, obj) {
+      var key = obj[property];
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(obj);
+      return acc;
+    }, {});
+    ////
+    const te = Object.entries(vad).map((elem) =>
+      Object.fromEntries(
+        new Map(
+          Object.entries({
+            overlist: parseInt(elem[0]),
+            size: elem[1].length,
+            genes: elem[1],
+          })
+        )
+      )
+    );
+    return te;
+  };
+
+  useEffect(() => {
+    const hh = groupBy(consolidated, "total");
+    setGroupB(hh);
+  }, [consolidated]);
+
+  /*   const te = Object.entries(hh).map((elem) =>
+    Object.fromEntries(
+      new Map(
+        Object.entries({
+          overlist: elem[0],
+          size: elem[1].length,
+          //genes: elem[1],
+        })
+      )
+    )
+  ); */
+
   return (
-    <div className="reports">
-      <h1>Reports/reports2</h1>
-    </div>
+    <>
+      <ListSectionCont>
+        <ListUpTitle />
+        <ListUpTitle>Redox-related lists</ListUpTitle>
+        <ListSection style={{ justifyContent: "space-around" }}>
+          <ChartCont>
+            <Chartbasic className="chartbasis" data={groupB} />
+          </ChartCont>
+          <ChartCont>
+            <ScatterBasic data={mds} />
+          </ChartCont>
+        </ListSection>
+      </ListSectionCont>
+      <ListSectionCont>
+        <ListSection>
+          <Heatmapchart />
+        </ListSection>
+      </ListSectionCont>
+    </>
   );
 };
 

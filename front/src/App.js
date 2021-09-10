@@ -12,12 +12,17 @@ function App() {
   const [initial, setInitial] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [consolidated, setConsolidated] = useState([]);
-  console.log(consolidated);
+  const [mds, setMds] = useState([]);
+
+  //console.log(consolidated);
   let setDataToProviderClicked = (forState) => {
     setClicked(forState);
   };
   let setDataToProviderConsolidated = (forState) => {
     setConsolidated(forState);
+  };
+  let setDataToProviderMds = (forState) => {
+    setMds(forState);
   };
 
   /*   const processRaw = (response) => {
@@ -71,8 +76,10 @@ function App() {
         initial,
         clicked,
         consolidated,
+        mds,
         setDataToProviderClicked: setDataToProviderClicked,
         setDataToProviderConsolidated: setDataToProviderConsolidated,
+        setDataToProviderMds: setDataToProviderMds,
       }}
     >
       <Router>
