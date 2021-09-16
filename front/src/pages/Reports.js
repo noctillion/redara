@@ -7,7 +7,9 @@ import { useHistory } from "react-router-dom";
 import { NameContext } from "../App";
 import FileUpload from "../components/fileupload/FileUpload";
 import ScatterBasic from "../components/scatterbasic/scatter";
-import Heatmapchart from "../components/heatmapbasic/heatmapchart";
+/* import Heatmapchart from "../components/heatmapbasic/heatmapchart"; */
+import MainHeat from "../components/heatmapMio/mainHeat";
+import FilterComp from "../components/filter/filter";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -33,6 +35,7 @@ const ListSection = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+
     //width: 100%;
   }
 `;
@@ -156,14 +159,14 @@ const ChartCont = styled.div`
   height: 400px;
   font-size: 1rem;
   justify-content: space-between;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   /*   margin-left: 5vw;
   margin-right: 5vw; */
   @media (max-width: 768px) {
     width: 400px;
     height: 300px;
     justify-content: center;
-    margin: 0;
+
     //width: 100%;
   }
 `;
@@ -201,6 +204,7 @@ export const ReportsOne = () => {
     setDataToProviderClicked,
     setDataToProviderConsolidated,
     setDataToProviderMds,
+    setDataToProviderFisher,
   } = useContext(NameContext);
   const [newData, setNewData] = useState([]);
   const [newInitialHold, setNewInitialHold] = useState([]);
@@ -312,6 +316,53 @@ export const ReportsOne = () => {
     setDataToProviderMds(response);
   };
 
+  const onFisher = async (data) => {
+    const res = await fetch("http://localhost:5000/listsfisher", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    /* .then((res) => console.log(res)); */
+    /* const response = res; */
+
+    const forFishD = (objectArray, property) => {
+      const resdos = objectArray.map((obj) => {
+        let cosa = Object.values(obj);
+        let cosa2 = Object.keys(obj);
+        /*  return {
+          pval: cosa.map((obj) => obj.pval),
+          overlap: cosa.map((obj) => obj.overlap),
+        }; */
+        //return cosa.map((obj) => obj.overlap);
+        return cosa.map((obj, index) => {
+          return {
+            /* forD: { pval: obj.pval, overlap: obj.overlap, id: obj.id },
+            algo: obj, */
+            forD: obj,
+            forF: cosa2[index],
+          };
+        });
+      });
+      return resdos;
+    };
+    console.log(res, "respp");
+    const response = forFishD(res);
+    console.log(response, "ponse");
+
+    setDataToProviderFisher(response);
+    /*     const resdos = response.map((obj) => {
+      let cosa = Object.values(obj);
+      return {
+        pv: cosa.map((obj) => obj.pval),
+        overl: cosa.map((obj) => obj.overlap),
+      };
+    });
+    console.log(resdos); */
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(newUserInfo);
@@ -377,6 +428,7 @@ export const ReportsOne = () => {
     if (dede.length === unuq.length) {
       onConsolidate(carray);
       onMDS(carray);
+      onFisher(carray);
       routeChange();
     } else {
       return console.log("repeated cols");
@@ -552,9 +604,45 @@ export const ReportsOne = () => {
 };
 
 export const ReportsTwo = () => {
-  const { consolidated, mds } = useContext(NameContext);
+  const { consolidated, mds, fisher } = useContext(NameContext);
   const [groupB, setGroupB] = useState([]);
+  const [ppp, setPpp] = useState({});
 
+  /* const [cdf, setCdf] = useState([]); */
+  console.log(groupB, "filterOne");
+
+  let fgi = groupB.filter((elem) => {
+    return elem.overlist > 2;
+  });
+  console.log(fgi, "pppopp");
+
+  useEffect(() => {
+    if (fisher.length > 0) {
+      let yoi = fisher.map((elem) => {
+        return elem.map((ob) => {
+          return ob.forF;
+        });
+      });
+
+      /* setPpp(Object.keys(fisher[0])); */
+      setPpp(yoi[0]);
+    }
+    /*     const forFish = (objectArray, property) => {
+      const resdos = objectArray.map((obj) => {
+        let cosa = Object.values(obj);
+
+        return cosa.map((obj) => {
+          return { pval: obj.pval, overlap: obj.overlap };
+        });
+      });
+      return resdos;
+    };
+
+    let cdf = forFish(fisher);
+    setCdf(cdf); */
+  }, [fisher]);
+
+  console.log(ppp, "fish");
   /*   const data = [
     { x: 0.0, y: -4.0, z: 200 },
     { x: -0.333333, y: 4.0, z: 260 },
@@ -587,7 +675,7 @@ export const ReportsTwo = () => {
 
   useEffect(() => {
     const hh = groupBy(consolidated, "total");
-    setGroupB(hh);
+    setGroupB(hh.map((n, i) => ({ ...n, id: i + 1 })));
   }, [consolidated]);
 
   /*   const te = Object.entries(hh).map((elem) =>
@@ -615,10 +703,24 @@ export const ReportsTwo = () => {
             <ScatterBasic data={mds} />
           </ChartCont>
         </ListSection>
+        <ListSection>
+          <div>selection list</div>
+        </ListSection>
       </ListSectionCont>
       <ListSectionCont>
+        <ListUpTitle>Select genes by overlap frequency</ListUpTitle>
+        <FilterComp items={groupB} />
+      </ListSectionCont>
+
+      {/*      <ListSectionCont>
         <ListSection>
-          <Heatmapchart />
+          <Heatmapchart datam={fisher} />
+        </ListSection>
+      </ListSectionCont> */}
+      <ListSectionCont style={{ display: "flex", flexDirection: "row" }}>
+        <ListSection style={{ justifyContent: "space-between" }}>
+          <MainHeat datam={fisher} names={ppp} />
+          <div style={{ width: "15%", backgroundColor: "red" }}>lists</div>
         </ListSection>
       </ListSectionCont>
     </>

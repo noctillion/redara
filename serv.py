@@ -6,10 +6,11 @@ from flask_cors import CORS, cross_origin
 import numpy as np
 import pandas as pd
 import json
-##import random
 import uuid
 from sklearn.metrics.pairwise import pairwise_distances
 import skbio
+import scipy.stats as stats
+from decimal import Decimal as D
 
 
 app = Flask(__name__)
@@ -108,13 +109,6 @@ def routineDF(df):
   return jslis
 
 
-
-
-
-
-
-
-
 # route
 @app.route('/lists',methods=['POST','GET'])##
 @cross_origin()
@@ -189,6 +183,64 @@ def MDSJac():
   jslis= json.dumps(jsc)
   return(jslis)
 
+
+### fisher
+def precision_round(number, digits=2):
+    power = "{:e}".format(number).split('e')[1]
+    return round(number, -(int(power) - digits))
+
+def column_index(df, query_cols):
+    cols = df.columns.values
+    sidx = np.argsort(cols)
+    return sidx[np.searchsorted(cols,query_cols,sorter=sidx)]
+
+def overlap_sets(setA, setB, size=34000):
+    """
+    Accepts to lists
+    M is the population size (previously N)
+    n is the number of successes in the population 
+    N is the sample size (previously n)
+    x is still the number of drawn “successes”
+    """
+    M=  size #total number of genes in the genome 
+    n= len(setA)
+    N= len(setB)
+    x= len(set(setA).intersection(set(setB)))
+    ndict = {}
+    ndict['overlap'] = x
+    ndict['pval'] = precision_round(stats.hypergeom.sf(x-1, M, n, N))
+    ndict['intersect'] = set(setA).intersection(set(setB))
+    return(ndict)
+    pass 
+
+def MatFish(df):
+  result_df = pd.DataFrame(columns = df.columns, index = df.columns)###recibe df de strings
+  for col1 in df:
+    for col2 in df:
+      result_df[col1][col2] = overlap_sets(df[col1].dropna().tolist(),df[col2].dropna().tolist())#.get('pval')
+      result_df[col1][col2]["ind"] = column_index(df, col1)
+      result_df[col1][col2]["comp"] = col1+ '-' +col2
+      result_df[col1][col2]["list1"] = col1
+      result_df[col1][col2]["list2"] = col2
+      result_df[col1][col2]['id'] = str(uuid.uuid4())
+  #pd_fill_diagonal(result_df, 0)
+  js= result_df.to_json(orient='records')## to_dict
+  return(js)
+
+# route
+@app.route('/listsfisher', methods=['POST'])##
+@cross_origin()
+# route function
+def ToDfObjAWMat():### aqui esta recibe json 
+  dic = request.get_json()
+  #dic = json.loads(dic)
+  appended_data = []
+  for i in range(len(dic)):
+    gh=pd.DataFrame(dic[i].get('genes')).rename(columns={0: dic[i].get('author')})
+    appended_data.append(gh)
+  appended_datam = pd.concat(appended_data, axis=1)
+  res = MatFish(appended_datam)
+  return(res)
 
 
 
