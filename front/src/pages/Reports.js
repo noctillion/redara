@@ -10,6 +10,7 @@ import ScatterBasic from "../components/scatterbasic/scatter";
 /* import Heatmapchart from "../components/heatmapbasic/heatmapchart"; */
 import MainHeat from "../components/heatmapMio/mainHeat";
 import FilterComp from "../components/filter/filter";
+import FilterDos from "../components/filterDod/filterDos";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -348,9 +349,9 @@ export const ReportsOne = () => {
       });
       return resdos;
     };
-    console.log(res, "respp");
+    //console.log(res, "respp");
     const response = forFishD(res);
-    console.log(response, "ponse");
+    //console.log(response, "ponse");
 
     setDataToProviderFisher(response);
     /*     const resdos = response.map((obj) => {
@@ -609,12 +610,12 @@ export const ReportsTwo = () => {
   const [ppp, setPpp] = useState({});
 
   /* const [cdf, setCdf] = useState([]); */
-  console.log(groupB, "filterOne");
+  //console.log(groupB, "filterOne");
 
-  let fgi = groupB.filter((elem) => {
+  /*   let fgi = groupB.filter((elem) => {
     return elem.overlist > 2;
-  });
-  console.log(fgi, "pppopp");
+  }); */
+  ///console.log(fgi, "pppopp");
 
   useEffect(() => {
     if (fisher.length > 0) {
@@ -642,7 +643,7 @@ export const ReportsTwo = () => {
     setCdf(cdf); */
   }, [fisher]);
 
-  console.log(ppp, "fish");
+  //console.log(ppp, "fish");
   /*   const data = [
     { x: 0.0, y: -4.0, z: 200 },
     { x: -0.333333, y: 4.0, z: 260 },
@@ -704,12 +705,10 @@ export const ReportsTwo = () => {
           </ChartCont>
         </ListSection>
         <ListSection>
-          <div>selection list</div>
+          <ListUpTitle>Select genes by overlap frequency</ListUpTitle>
+          {/* <FilterComp items={groupB} /> */}
+          <FilterDos items={groupB} />
         </ListSection>
-      </ListSectionCont>
-      <ListSectionCont>
-        <ListUpTitle>Select genes by overlap frequency</ListUpTitle>
-        <FilterComp items={groupB} />
       </ListSectionCont>
 
       {/*      <ListSectionCont>
@@ -722,6 +721,17 @@ export const ReportsTwo = () => {
           <MainHeat datam={fisher} names={ppp} />
           <div style={{ width: "15%", backgroundColor: "red" }}>lists</div>
         </ListSection>
+      </ListSectionCont>
+      <ListSectionCont>
+        <ListUpTitle>Consolidate lists</ListUpTitle>
+        <ListSection style={{ justifyContent: "center" }}>
+          <MainButton onClick={console.log("object")}>
+            <span style={{ marginLeft: "10px", marginRight: "10px" }}>
+              Consolidate
+            </span>
+          </MainButton>
+        </ListSection>
+        <ListUpTitle />
       </ListSectionCont>
     </>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import SmallSquareCo from "../smallSquareCo/smallSquareCo";
 
 const OuterCont = styled.div`
   display: flex;
@@ -60,7 +61,7 @@ const SmallSquare = styled.div`
   background-color: ${(props) => props.color};
 `;
 
-const SmallSquareC = styled.div`
+/* const SmallSquareC = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,38 +77,33 @@ const SmallSquareC = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-      /* height: 20vw; */
       background-color: black;
       color: white;
       position: absolute;
       inset: 0;
-      /*  top: 0px;
-      right: 0px; */
-      /*    top: 0,
-      left: 50%, */
       transform: translate(-50%, -50%);
-      /*  width: 100px;
-      height: 100px; */
       width: fit-content;
       height: fit-content;
-      /*    transform: translate(20px, 10px);
-      animation-duration: 1s;
-      animation-delay: 0.5s; */
       z-index: 400;
       border: 1px solid green;
     }
   }
-`;
+`; */
 
 const MainHeat = ({ datam, names }) => {
-  console.log(datam, "dataaaWWWWW");
+  //console.log(datam, "dataaaWWWWW");
 
   let data = datam.map((vals) => {
     return vals.map((rt) => {
-      return { pval: rt.forD.pval, overlap: rt.forD.overlap, id: rt.forD.id };
+      return {
+        pval: rt.forD.pval,
+        overlap: rt.forD.overlap,
+        id: rt.forD.id,
+        intersect: rt.forD.intersect,
+      };
     });
   });
-  console.log(data, "kkkRRRRR");
+  //console.log(data, "kkkRRRRRheat");
 
   let tg = data.map((arr) => arr.length);
 
@@ -154,6 +150,13 @@ const MainHeat = ({ datam, names }) => {
   /*   let rows = ["unojjjjj", "uno", "uno", "uno", "dos"];
   let columns = ["uno", "uno", "uno", "dos", "tres"]; */
 
+  /*   let handleClick = (e) => {
+    console.log("this is working fine");
+    e.preventDefault();
+    e.target.style.border = "2px solid green";
+    console.log(e.target);
+  }; */
+
   return (
     <>
       {names.length > 0 ? (
@@ -183,14 +186,15 @@ const MainHeat = ({ datam, names }) => {
                       (maxmin.max - elem.overlap) / (maxmin.max - maxmin.min)
                     })`;
                     return (
-                      <SmallSquareC
+                      <SmallSquareCo col={col} elem={elem} />
+                      /*                       <SmallSquareC
                         color={col}
                         before={elem.pval}
-                        onClick={() => console.log(elem.overlap)}
+                        onClick={handleClick}
                         key={elem.id}
                       >
                         {elem.overlap}
-                      </SmallSquareC>
+                      </SmallSquareC> */
                     );
                   });
                 })}

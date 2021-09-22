@@ -1,9 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { NameContext } from "../../App";
 
 const FilterComp = ({ items }) => {
+  const { setDataToProviderFilteredR } = useContext(NameContext);
   const [filters, setFilters] = useState([]);
-  console.log(filters, "filters");
-  console.log(items, "itemskjkjkjkj");
+  console.log(filters, "objectFiltersssss");
+
+  const [mergedL, setMergedL] = useState([]);
+  console.log(mergedL, "PPPooo");
+
+  //console.log(filters, "object");
   const Item = ({ size }) => (
     <div>
       <h4>
@@ -45,22 +51,47 @@ const FilterComp = ({ items }) => {
       isAll = newFilters
         .filter((n) => n.value !== "all")
         .every((n) => n.active);
-    console.log(isAll, "isaslll");
     newFilters.find((n) => n.value === "all").active = isAll;
-    console.log(newFilters, "clicked_mlnkbjghft");
     setFilters(newFilters);
   };
 
-  const filteredBrands = filters.filter((n) => n.active).map((n) => n.value),
-    filteredItems = items.filter((n) =>
-      filteredBrands.includes(n.overlist.toString())
-    );
-  console.log(filteredItems, "filteredItems");
+  const filteredBrands = filters.filter((n) => n.active).map((n) => n.value);
+  const filteredItems = items.filter((n) =>
+    filteredBrands.includes(n.overlist.toString())
+  );
+  console.log(filteredItems);
 
-  if (filteredItems.length > 0) {
-    const sumGen = filteredItems.map((n) => n.size).reduce((a, b) => a + b, 0);
-    console.log(sumGen, "ooo");
-  }
+  useEffect(() => {
+    let dataDosD = [];
+    if (filteredItems.length > 0) {
+      const sumGen = filteredItems
+        .map((n) => n.size)
+        .reduce((a, b) => a + b, 0);
+      const genesListFil = filteredItems.map((n) => {
+        return n.genes.map((nj) => nj.genes);
+      });
+      console.log(sumGen, "ooo");
+
+      let asySSS = async () => {
+        try {
+          var merged = await [].concat.apply([], genesListFil);
+          return merged;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      async function run() {
+        const data = await asySSS();
+
+        dataDosD.push(data);
+      }
+
+      run();
+    }
+  }, [filteredItems]);
+
+  // will print your data
 
   return (
     <div>
