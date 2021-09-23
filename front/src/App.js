@@ -17,7 +17,9 @@ function App() {
   const [interselect, setInterselect] = useState([]);
   const [filteredR, setFilteredR] = useState(null);
 
-  console.log(filteredR, "interselect");
+  console.log(interselect, "iiiiiiinnnterrrrrr");
+
+  //console.log(filteredR, "RRRRinterselectRRRRR");
   let setDataToProviderClicked = (forState) => {
     setClicked(forState);
   };

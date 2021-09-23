@@ -9,8 +9,9 @@ import FileUpload from "../components/fileupload/FileUpload";
 import ScatterBasic from "../components/scatterbasic/scatter";
 /* import Heatmapchart from "../components/heatmapbasic/heatmapchart"; */
 import MainHeat from "../components/heatmapMio/mainHeat";
-import FilterComp from "../components/filter/filter";
+//import FilterComp from "../components/filter/filter";
 import FilterDos from "../components/filterDod/filterDos";
+import CardIntersection from "../components/cardInter/cardIntersection";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -182,6 +183,18 @@ const ChartCont = styled.div`
     justify-content: center;
     //width: 100%;
   }
+`; */
+
+/* const CardIntersection = styled.div`
+  display: flex;
+  border: 1px solid black;
+  flex-direction: column;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: rgb(229, 206, 156, 0.5);
+  padding: 5px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 `; */
 
 export const Reports = () => {
@@ -431,9 +444,9 @@ export const ReportsOne = () => {
       onMDS(carray);
       onFisher(carray);
       routeChange();
-    } else {
+    } /* else {
       return console.log("repeated cols");
-    }
+    } */
   };
 
   /* const listOut = (val) => { */
@@ -605,9 +618,12 @@ export const ReportsOne = () => {
 };
 
 export const ReportsTwo = () => {
-  const { consolidated, mds, fisher } = useContext(NameContext);
+  const { consolidated, mds, fisher, filteredR, interselect } =
+    useContext(NameContext);
   const [groupB, setGroupB] = useState([]);
   const [ppp, setPpp] = useState({});
+
+  //console.log(filteredR, "filteredR filteredR filteredR ");
 
   /* const [cdf, setCdf] = useState([]); */
   //console.log(groupB, "filterOne");
@@ -704,10 +720,43 @@ export const ReportsTwo = () => {
             <ScatterBasic data={mds} />
           </ChartCont>
         </ListSection>
-        <ListSection>
-          <ListUpTitle>Select genes by overlap frequency</ListUpTitle>
-          {/* <FilterComp items={groupB} /> */}
-          <FilterDos items={groupB} />
+        <ListSection style={{ marginTop: "5px", backgroundColor: "#FFFFFF" }}>
+          <div
+            style={{
+              display: "flex",
+              backgroundColor: "rgb(165, 170, 160, 0.2)",
+              borderRadius: "5px",
+              width: "100%",
+              alignItems: "center",
+              paddingTop: "2vh",
+              paddingBottom: "2vh",
+            }}
+          >
+            {filteredR !== null && filteredR.length > 0 ? (
+              <ListUpTitle
+                style={{
+                  //border: "1px solid black",
+                  margin: 0,
+                  marginLeft: "10px",
+                }}
+              >
+                Selected genes by lists overlap: {filteredR[0].length}
+              </ListUpTitle>
+            ) : (
+              <ListUpTitle
+                style={{
+                  //border: "1px solid black",
+                  margin: 0,
+                  marginLeft: "10px",
+                }}
+              >
+                Select genes by overlap frequency
+              </ListUpTitle>
+            )}
+
+            {/* <FilterComp items={groupB} /> */}
+            <FilterDos items={groupB} />
+          </div>
         </ListSection>
       </ListSectionCont>
 
@@ -716,10 +765,81 @@ export const ReportsTwo = () => {
           <Heatmapchart datam={fisher} />
         </ListSection>
       </ListSectionCont> */}
-      <ListSectionCont style={{ display: "flex", flexDirection: "row" }}>
-        <ListSection style={{ justifyContent: "space-between" }}>
-          <MainHeat datam={fisher} names={ppp} />
-          <div style={{ width: "15%", backgroundColor: "red" }}>lists</div>
+      <ListSectionCont>
+        <ListUpTitle>Include specific lists or intersections</ListUpTitle>
+        <ListSectionCont
+          style={{
+            display: "flex",
+          }}
+        >
+          <ListSection
+            style={{
+              justifyContent: "space-between",
+              border: "1px solid red",
+              height: "fit-content",
+              //height: "auto",
+              overflow: "hidden", //auto
+              paddingBottom: "100px",
+            }}
+          >
+            <MainHeat datam={fisher} names={ppp} />
+            {/* <div style={{ width: "15%", backgroundColor: "red" }}>lists</div> */}
+          </ListSection>
+        </ListSectionCont>
+        {/* dsdsd */}
+        <ListSection style={{ marginTop: "5px", backgroundColor: "#FFFFFF" }}>
+          <div
+            style={{
+              display: "flex",
+              backgroundColor: "rgb(165, 170, 160, 0.2)",
+              borderRadius: "5px 5px 0px 0px",
+              width: "100%",
+              alignItems: "center",
+              paddingTop: "2vh",
+              paddingBottom: "2vh",
+            }}
+          >
+            <ListUpTitle
+              style={{
+                //border: "1px solid black",
+                margin: 0,
+                marginLeft: "10px",
+              }}
+            >
+              Selected genes by lists overlappppppyy
+            </ListUpTitle>
+
+            {/* <FilterComp items={groupB} /> */}
+          </div>
+          <div
+            style={{
+              display: "flex",
+              backgroundColor: "rgb(165, 170, 160, 0.2)",
+              borderRadius: "0px 0px 5px 5px",
+              width: "100%",
+              alignItems: "center",
+              //border: "1px solid purple",
+              //paddingTop: "2vh",
+              //paddingBottom: "10px",
+            }}
+          >
+            {/*   <CardIntersection>
+              <div>List 1: Marura_2012</div>
+              <div>List 2: Burrows_2012</div>
+              <div>Intersect: 345</div>
+            </CardIntersection> */}
+
+            {interselect.map((elem) => {
+              return (
+                <CardIntersection
+                  key={elem.id}
+                  list1={elem.list1}
+                  list2={elem.list2}
+                  intersect={elem.overlap}
+                />
+              );
+            })}
+          </div>
         </ListSection>
       </ListSectionCont>
       <ListSectionCont>

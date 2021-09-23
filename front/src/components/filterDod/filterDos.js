@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { NameContext } from "../../App";
 import Button from "./button";
 
 const FilterDos = ({ items }) => {
-  console.log(items, "tttttttttttttttt");
+  const { setDataToProviderFilteredR } = useContext(NameContext);
+  ///console.log(items, "tttttttttttttttt");
   let [selectedObjects, setSelectedObjects] = useState([]);
   const [proph, setProph] = useState([]);
   const [nitems, setNitems] = useState([]);
-  console.log(nitems, "nitems");
-  console.log(selectedObjects, "selectedObjectsiiiitemssss");
+  //console.log(nitems, "nitems");
+  //console.log(selectedObjects, "selectedObjectsiiiitemssss");
   //filteredArray = filteredArray];
   /*   if (filteredArray.length > 0) {
     //const sumGen = filteredArray.map((n) => n.size).reduce((a, b) => a + b, 0);
@@ -32,12 +34,12 @@ const FilterDos = ({ items }) => {
       filteredArray = items.map((itm) => {
         return itm;
       });
-      console.log(filteredArray, "filteredArrayfilteredArray");
+      //console.log(filteredArray, "filteredArrayfilteredArray");
     } else {
       filteredArray = items.filter(function (itm) {
         return selectedObjects.indexOf(itm.overlist.toString()) > -1;
       });
-      console.log(filteredArray, "DoosfilteredArrayfilteredArray");
+      ///console.log(filteredArray, "DoosfilteredArrayfilteredArray");
     }
 
     let bals = [];
@@ -53,7 +55,11 @@ const FilterDos = ({ items }) => {
     setProph(bals);
   }, [selectedObjects, items]);
 
-  console.log(proph, "jhjhjhjhjhjhjh");
+  ///console.log(proph, "jhjhjhjhjhjhjh");
+
+  useEffect(() => {
+    setDataToProviderFilteredR(proph);
+  }, [proph, setDataToProviderFilteredR]);
 
   function toggle(value) {
     if (selectedObjects.includes("all") && selectedObjects.length > 1) {
@@ -72,7 +78,7 @@ const FilterDos = ({ items }) => {
 
   let isChecked = (value) => {
     if (selectedObjects.indexOf(value) > -1) {
-      console.log(selectedObjects.length, "ooooooooooooooooooooooo");
+      //console.log(selectedObjects.length, "ooooooooooooooooooooooo");
       return selectedObjects.indexOf(value) > -1;
     }
     if (selectedObjects.indexOf("all") !== -1) {
@@ -80,7 +86,7 @@ const FilterDos = ({ items }) => {
       return true;
     }
     if (selectedObjects.indexOf("all") === -1) {
-      console.log("menos1");
+      ///console.log("menos1");
       return false;
     }
   };
@@ -90,7 +96,7 @@ const FilterDos = ({ items }) => {
   }; */
 
   return (
-    <div>
+    <div style={{ display: "flex", fontSize: "2rem" }}>
       {nitems.map((object) => {
         /////items
         return (

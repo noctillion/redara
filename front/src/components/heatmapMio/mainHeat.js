@@ -91,7 +91,7 @@ const SmallSquare = styled.div`
 `; */
 
 const MainHeat = ({ datam, names }) => {
-  //console.log(datam, "dataaaWWWWW");
+  console.log(datam, "dataaaWWWWW");
 
   let data = datam.map((vals) => {
     return vals.map((rt) => {
@@ -100,6 +100,8 @@ const MainHeat = ({ datam, names }) => {
         overlap: rt.forD.overlap,
         id: rt.forD.id,
         intersect: rt.forD.intersect,
+        list1: rt.forD.list1,
+        list2: rt.forD.list2,
       };
     });
   });
