@@ -13,6 +13,8 @@ import MainHeat from "../components/heatmapMio/mainHeat";
 import FilterDos from "../components/filterDod/filterDos";
 import CardIntersection from "../components/cardInter/cardIntersection";
 
+import { ReportsThreeStudy } from "../forstudy/tres";
+
 const ListSectionCont = styled.div`
   width: 100%;
   height: fit-content;
@@ -173,6 +175,17 @@ const ChartCont = styled.div`
   }
 `;
 
+const CardsContainer = styled.div`
+  display: flex;
+  background-color: rgb(165, 170, 160, 0.2);
+  border-radius: 0px 0px 5px 5px;
+  width: 100%;
+  align-items: center;
+  height: fit-content;
+  flex-wrap: wrap;
+  padding-right: 10px;
+`;
+
 /* const GraphCont = styled.div`
   display: flex;
   justify-content: space-between;
@@ -219,6 +232,7 @@ export const ReportsOne = () => {
     setDataToProviderConsolidated,
     setDataToProviderMds,
     setDataToProviderFisher,
+    setDataToProviderInterselect,
   } = useContext(NameContext);
   const [newData, setNewData] = useState([]);
   const [newInitialHold, setNewInitialHold] = useState([]);
@@ -444,6 +458,7 @@ export const ReportsOne = () => {
       onMDS(carray);
       onFisher(carray);
       routeChange();
+      setDataToProviderInterselect([]);
     } /* else {
       return console.log("repeated cols");
     } */
@@ -515,6 +530,7 @@ export const ReportsOne = () => {
       </ListSectionCont>
       <ListSectionCont>
         <ListUpTitle>Lists upload</ListUpTitle>
+        {/* aqui */}
         <ListSection>
           {newData.length > 0 ? (
             <>
@@ -618,12 +634,28 @@ export const ReportsOne = () => {
 };
 
 export const ReportsTwo = () => {
-  const { consolidated, mds, fisher, filteredR, interselect } =
-    useContext(NameContext);
+  const {
+    consolidated,
+    mds,
+    fisher,
+    filteredR,
+    interselect,
+    setDataToProviderFinlist,
+  } = useContext(NameContext);
   const [groupB, setGroupB] = useState([]);
   const [ppp, setPpp] = useState({});
+  const [consolBylist, setConsolBylist] = useState([]);
+  const [totalListCon, setTotalListCon] = useState([]);
+  //console.log(consolBylist, "fff");
 
-  //console.log(filteredR, "filteredR filteredR filteredR ");
+  ///console.log(filteredR, "filteredR filteredR filteredR ");
+
+  const history = useHistory();
+
+  const routeChangeDos = () => {
+    let path = `/lists/lists3`;
+    history.push(path);
+  };
 
   /* const [cdf, setCdf] = useState([]); */
   //console.log(groupB, "filterOne");
@@ -694,6 +726,87 @@ export const ReportsTwo = () => {
     const hh = groupBy(consolidated, "total");
     setGroupB(hh.map((n, i) => ({ ...n, id: i + 1 })));
   }, [consolidated]);
+
+  /*   useEffect(() => {
+    let sumInt = interselect.reduce(
+      (accumulator, current) => accumulator + current.overlap,
+      0
+    );
+    console.log(sumInt);
+  }, [interselect]); */
+  //let bals = [];
+  /*   useEffect(() => {
+    if (interselect.length > 0) {
+      //const sumGen = interselect.map((n) => n.size).reduce((a, b) => a + b, 0);
+      const genesListFil = interselect.map((n) => {
+        return n.intersect; //.map((nj) => nj);
+      });
+
+      var merged = [].concat
+        .apply([], genesListFil)
+        .filter((v, i, a) => a.indexOf(v) === i);
+
+      //bals.push(merged);
+    }
+    setConsolBylist(merged);
+  }, [interselect, consolBylist]); */
+
+  const SummatoryList = (inter) => {
+    if (inter.length > 0) {
+      //const sumGen = interselect.map((n) => n.size).reduce((a, b) => a + b, 0);
+      const genesListFil = inter.map((n) => {
+        return n.intersect; //.map((nj) => nj);
+      });
+      var merged = [].concat
+        .apply([], genesListFil)
+        .filter((v, i, a) => a.indexOf(v) === i);
+      return merged;
+    }
+  };
+
+  useEffect(() => {
+    let ftyu = SummatoryList(interselect);
+    setConsolBylist(ftyu);
+    //console.log(ftyu, "objectOOO");
+  }, [interselect]);
+
+  let totalListFun = (arr1, arr2) => {
+    let far1 = () => {
+      if (arr1 === undefined || arr1 === null) {
+        return (arr1 = []);
+      } else {
+        return arr1;
+      }
+    };
+
+    let far2 = () => {
+      if (arr2 === undefined || arr2 === null) {
+        return (arr2 = []);
+      } else {
+        return arr2;
+      }
+    };
+    let marr1 = far1();
+    //console.log(marr1, "marr1");
+    let marr2 = far2();
+    //console.log(marr2, "marr2");
+    let combinedArray = [...marr1, ...marr2.flat()].filter(
+      (v, i, a) => a.indexOf(v) === i
+    );
+    return combinedArray;
+  };
+
+  useEffect(() => {
+    let totListr = totalListFun(consolBylist, filteredR);
+
+    setTotalListCon(totListr);
+  }, [consolBylist, filteredR]);
+
+  let sendConsolid = () => {
+    setDataToProviderFinlist(totalListCon);
+    routeChangeDos();
+    /// console.log(totalListCon, "aqi");
+  };
 
   /*   const te = Object.entries(hh).map((elem) =>
     Object.fromEntries(
@@ -775,7 +888,7 @@ export const ReportsTwo = () => {
           <ListSection
             style={{
               justifyContent: "space-between",
-              border: "1px solid red",
+              //border: "1px solid red",
               height: "fit-content",
               //height: "auto",
               overflow: "hidden", //auto
@@ -787,65 +900,55 @@ export const ReportsTwo = () => {
           </ListSection>
         </ListSectionCont>
         {/* dsdsd */}
-        <ListSection style={{ marginTop: "5px", backgroundColor: "#FFFFFF" }}>
-          <div
-            style={{
-              display: "flex",
-              backgroundColor: "rgb(165, 170, 160, 0.2)",
-              borderRadius: "5px 5px 0px 0px",
-              width: "100%",
-              alignItems: "center",
-              paddingTop: "2vh",
-              paddingBottom: "2vh",
-            }}
-          >
-            <ListUpTitle
-              style={{
-                //border: "1px solid black",
-                margin: 0,
-                marginLeft: "10px",
-              }}
+
+        {consolBylist ? (
+          <>
+            <ListSection
+              style={{ marginTop: "5px", backgroundColor: "#FFFFFF" }}
             >
-              Selected genes by lists overlappppppyy
-            </ListUpTitle>
+              <div
+                style={{
+                  display: "flex",
+                  backgroundColor: "rgb(165, 170, 160, 0.2)",
+                  borderRadius: "5px 5px 0px 0px",
+                  width: "100%",
+                  alignItems: "center",
+                  paddingTop: "2vh",
+                  paddingBottom: "2vh",
+                }}
+              >
+                <ListUpTitle
+                  style={{
+                    //border: "1px solid black",
+                    margin: 0,
+                    marginLeft: "10px",
+                  }}
+                >
+                  Selected genes by lists overlappppppyy {consolBylist.length}
+                </ListUpTitle>
 
-            {/* <FilterComp items={groupB} /> */}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              backgroundColor: "rgb(165, 170, 160, 0.2)",
-              borderRadius: "0px 0px 5px 5px",
-              width: "100%",
-              alignItems: "center",
-              //border: "1px solid purple",
-              //paddingTop: "2vh",
-              //paddingBottom: "10px",
-            }}
-          >
-            {/*   <CardIntersection>
-              <div>List 1: Marura_2012</div>
-              <div>List 2: Burrows_2012</div>
-              <div>Intersect: 345</div>
-            </CardIntersection> */}
-
-            {interselect.map((elem) => {
-              return (
-                <CardIntersection
-                  key={elem.id}
-                  list1={elem.list1}
-                  list2={elem.list2}
-                  intersect={elem.overlap}
-                />
-              );
-            })}
-          </div>
-        </ListSection>
+                {/* <FilterComp items={groupB} /> */}
+              </div>
+              <CardsContainer>
+                {interselect.map((elem) => {
+                  return (
+                    <CardIntersection
+                      key={elem.id}
+                      list1={elem.list1}
+                      list2={elem.list2}
+                      intersect={elem.overlap}
+                    />
+                  );
+                })}
+              </CardsContainer>
+            </ListSection>
+          </>
+        ) : null}
       </ListSectionCont>
       <ListSectionCont>
-        <ListUpTitle>Consolidate lists</ListUpTitle>
+        <ListUpTitle>Total selected genes: {totalListCon.length}</ListUpTitle>
         <ListSection style={{ justifyContent: "center" }}>
-          <MainButton onClick={console.log("object")}>
+          <MainButton onClick={sendConsolid}>
             <span style={{ marginLeft: "10px", marginRight: "10px" }}>
               Consolidate
             </span>
@@ -858,9 +961,11 @@ export const ReportsTwo = () => {
 };
 
 export const ReportsThree = () => {
+  //const [authors, setAuthors] = useState([]);
+
   return (
-    <div className="reports">
-      <h1>Reports/reports3</h1>
-    </div>
+    <>
+      <ReportsThreeStudy />
+    </>
   );
 };

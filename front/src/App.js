@@ -16,9 +16,11 @@ function App() {
   const [fisher, setFisher] = useState([]);
   const [interselect, setInterselect] = useState([]);
   const [filteredR, setFilteredR] = useState(null);
+  const [finlist, setFinlist] = useState([]);
+  const [forNetworkFiltered, setForNetworkFiltered] = useState([]);
 
   console.log(interselect, "iiiiiiinnnterrrrrr");
-
+  console.log(consolidated, "consolidated");
   //console.log(filteredR, "RRRRinterselectRRRRR");
   let setDataToProviderClicked = (forState) => {
     setClicked(forState);
@@ -37,6 +39,14 @@ function App() {
   };
   let setDataToProviderFilteredR = (forState) => {
     setFilteredR(forState);
+  };
+
+  let setDataToProviderFinlist = (forState) => {
+    setFinlist(forState);
+  };
+
+  let setDataToProviderForNetworkFiltered = (forState) => {
+    setForNetworkFiltered(forState);
   };
 
   /*   const processRaw = (response) => {
@@ -94,12 +104,17 @@ function App() {
         fisher,
         interselect,
         filteredR,
+        finlist,
+        forNetworkFiltered,
         setDataToProviderClicked: setDataToProviderClicked,
         setDataToProviderConsolidated: setDataToProviderConsolidated,
         setDataToProviderMds: setDataToProviderMds,
         setDataToProviderFisher: setDataToProviderFisher,
         setDataToProviderInterselect: setDataToProviderInterselect,
         setDataToProviderFilteredR: setDataToProviderFilteredR,
+        setDataToProviderFinlist: setDataToProviderFinlist,
+        setDataToProviderForNetworkFiltered:
+          setDataToProviderForNetworkFiltered,
       }}
     >
       <Router>
