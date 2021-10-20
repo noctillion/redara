@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { NameContext } from "../../App";
-import COSEBilkent from "cytoscape-cose-bilkent";
+import fcose from "cytoscape-fcose";
+//import COSEBilkent from "cytoscape-cose-bilkent";
 import Cytoscape from "cytoscape";
-Cytoscape.use(COSEBilkent);
+//Cytoscape.use(COSEBilkent);
+Cytoscape.use(fcose);
 export default function NApp() {
   const {
     //initial,
@@ -73,6 +75,37 @@ export default function NApp() {
     directed: false,
     avoidOverlap: true,
     spacingFactor: 2.5,
+  };
+
+  const layoutD = {
+    animate: false,
+    animationDuration: undefined,
+    animationEasing: undefined,
+    boundingBox: undefined,
+    componentSpacing: 40,
+    coolingFactor: 0.99,
+    fit: true,
+    gravity: 1,
+    initialTemp: 1000,
+    minTemp: 1.0,
+    name: "fcose",
+    nestingFactor: 1.2,
+    nodeDimensionsIncludeLabels: false,
+    nodeOverlap: 4,
+    numIter: 1000,
+    padding: 30,
+
+    /*  nodeRepulsion: (node) => 4500,
+    // Ideal edge (non nested) length
+    idealEdgeLength: (edge) => 50,
+    // Divisor to compute edge forces
+    edgeElasticity: (edge) => 0.45, */
+
+    position(node) {
+      return { row: node.data("row"), col: node.data("col") };
+    },
+    randomize: true,
+    refresh: 20,
   };
 
   /*   const layout = {
@@ -165,15 +198,16 @@ export default function NApp() {
               minZoom={0.1}
               autounselectify={false}
               boxSelectionEnabled={true}
-              layout={layout}
+              layout={layoutD}
               stylesheet={styleSheet}
               cy={(cy) => {
                 myCyRef = cy;
 
                 console.log("EVT", cy);
 
-                cy.on("tap", "node", (evt) => {
+                cy.on("add", "tap", "node", (evt) => {
                   var node = evt.target;
+
                   console.log("EVT", evt);
                   console.log("TARGET", node.data());
                   console.log("TARGET TYPE", typeof node[0]);

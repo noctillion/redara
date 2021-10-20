@@ -7,6 +7,7 @@ import Upset from "../components/upset/upset";
 //import Network from "../components/network/network";
 //import GraphCyt from "../components/citoNetw/citoNet";
 import NApp from "../components/citoNetwDos/citoNetD";
+import TresDGraph from "../components/tresDGraph/TresDGraph";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -441,6 +442,7 @@ export const ReportsThreeStudy = () => {
         <ListUpTitle />
       </ListSectionCont>
       <Upset />
+      <TresDGraph />
       {/* <Network /> */}
       {/* <GraphCyt /> */}
       <NApp />

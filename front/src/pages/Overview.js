@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import Background from "../assets/Untitled SD.mp4";
+//import Background from "../assets/Untitled SD.mp4";
+import Background from "../assets/Cvi-0.jpg";
 
 const OverWrap = styled.div`
   max-width: 100%;
