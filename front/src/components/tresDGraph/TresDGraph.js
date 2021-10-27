@@ -5,6 +5,7 @@ import {
   ForceGraphVR,
   ForceGraphAR,
 } from "react-force-graph";
+import { FocusGraph } from "./TresDGraphFoc";
 
 const myData = {
   nodes: [
@@ -44,6 +45,7 @@ const TresDGraph = () => {
     <>
       <ForceGraph3D graphData={myData} />
       <ForceGraph3D graphData={genRandomTree()} />
+      <FocusGraph />
     </>
   );
 };

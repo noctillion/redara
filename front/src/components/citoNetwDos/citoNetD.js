@@ -182,7 +182,7 @@ export default function NApp() {
     <>
       {Object.keys(forNetworkFiltered).length > 0 ? (
         <div>
-          <h1>Cytoscape example</h1>
+          <h1>Cytoscape exampleAqui</h1>
           <div
             style={{
               border: "1px solid",

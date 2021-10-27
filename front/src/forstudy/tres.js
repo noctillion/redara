@@ -287,9 +287,9 @@ export const ReportsThreeStudy = () => {
     let filteredArrNet = averfilter.map((value) => value.genes).join("%0d");
     //let newFil = filteredArrNet.join("%0d");
 
-    retrieved(filteredArrNet);
+    retrieved(filteredArrNet); // aqui se manda a string
     //setDataToProviderForNetworkFiltered(filteredArrNet);
-    console.log(filteredArrNet, "averfilteraverfilter");
+    console.log(filteredArrNet, "DECONSOLIDADORESPUESTA");
     //setDataToProviderConsolidated(response);
   };
 
@@ -435,7 +435,7 @@ export const ReportsThreeStudy = () => {
         <ListSection style={{ justifyContent: "center" }}>
           <MainButton onClick={consolidateLists}>
             <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-              Consolidate
+              ConsolidateR
             </span>
           </MainButton>
         </ListSection>
