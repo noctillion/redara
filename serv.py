@@ -1,7 +1,7 @@
 # This is the code
 # Find me on discord ZDev1#4511
 # We shouldn't install flask in the terminal, it is already imported
-from flask import (Flask, request)
+from flask import (Flask, request,jsonify)
 from flask_cors import CORS, cross_origin
 import numpy as np
 import pandas as pd
@@ -11,6 +11,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 import skbio
 import scipy.stats as stats
 from decimal import Decimal as D
+import requests
 
 
 app = Flask(__name__)
@@ -242,6 +243,44 @@ def ToDfObjAWMat():### aqui esta recibe json
   res = MatFish(appended_datam)
   return(res)
 
+
+
+
+### funcion para string request
+def stringReq(protein_list):
+  proteins = '%0d'.join(protein_list)
+  url = 'https://string-db.org/api/tsv/network?identifiers=' + proteins + '&species=3702'
+  r = requests.get(url)
+  return r
+
+
+
+## function para table de interacciones
+def interacTable(r):
+  lines = r.text.split('\n') # pull the text from the response object and split based on new lines
+  data = [l.split('\t') for l in lines] # split each line into its components based on tabs
+  # convert to dataframe using the first row as the column names; drop empty, final row
+  df = pd.DataFrame(data[1:-1], columns = data[0]) 
+  # dataframe with the preferred names of the two proteins and the score of the interaction
+  interactions = df[['preferredName_A', 'preferredName_B','stringId_A','stringId_B', 'score']] 
+  return interactions
+
+
+# route
+@app.route('/stringdb', methods=['POST'])##
+@cross_origin()
+# route function
+def retrieveFromString():
+  dic = request.get_json()
+  ra=stringReq(dic)
+  intera =interacTable(ra)
+  jsca =  intera.to_dict(orient = 'records')##este
+  jslisa= json.dumps(jsca)
+  return(jslisa)
+
+  
+ 
+ 
 
 
 # listen

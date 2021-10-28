@@ -6,7 +6,7 @@ import FileUpload from "../components/fileupload/FileUpload";
 import Upset from "../components/upset/upset";
 //import Network from "../components/network/network";
 //import GraphCyt from "../components/citoNetw/citoNet";
-//import NApp from "../components/citoNetwDos/citoNetD";
+import NApp from "../components/citoNetwDos/citoNetD";
 import TresDGraph from "../components/tresDGraph/TresDGraph";
 
 const ListSectionCont = styled.div`
@@ -158,7 +158,7 @@ export const ReportsThreeStudy = () => {
     finlist,
     forNetworkFiltered,
     setDataToProviderClicked,
-    consolidated,
+
     setDataToProviderForNetworkFiltered,
     setDataToProviderInterselect,
   } = useContext(NameContext);
@@ -168,7 +168,6 @@ export const ReportsThreeStudy = () => {
   //const [locInitial, setlocInitial] = useState([]);
   //const [initialHold, setInitialHold] = useState([]);
   console.log(finlist, "listaConsolidada");
-  console.log(consolidated, "CONSOLIDADADESDECONTEXT");
   console.log(
     Object.keys(forNetworkFiltered).length,
     "Object.keys(forNetworkFiltered).length"
@@ -219,6 +218,50 @@ export const ReportsThreeStudy = () => {
      setDataToProviderForNetworkFiltered(me);
   }; */
 
+  const retrieved = async (ner) => {
+    if (ner.length < 1) {
+      console.log("busqueda vacia");
+    }
+
+    let responsed = await fetch(
+      `https://string-db.org/api/json/network?identifiers=${ner}&species=3702`
+    );
+    let datad = await responsed.json();
+    console.log(datad, "networkresponse");
+
+    let nodes = datad
+      .map((item) => [item.preferredName_A, item.preferredName_B])
+      .flat(1)
+      .filter((value, index, self) => self.indexOf(value) === index) // valores unicos
+      .map((elem) => {
+        return { data: { id: elem, label: elem, type: "ip" } };
+      });
+
+    console.log(nodes, "dert ");
+
+    let edges = datad.map((elem) => {
+      return {
+        data: { source: elem.preferredName_A, target: elem.preferredName_B },
+      };
+    });
+    console.log(edges, "forGr");
+
+    let namesDict = datad.map((elem) => {
+      var o = {};
+      o[elem.preferredName_A] = elem.stringId_A
+        .split(/[.]/)
+        .slice(1, -1)
+        .toString();
+      return o;
+    });
+
+    console.log(namesDict, "NAMESDIC");
+
+    const me = { nodes: nodes, edges: edges };
+    console.log(me, "meeeee");
+    setDataToProviderForNetworkFiltered(me);
+  };
+
   const updateUploadedFiles = (files) =>
     setNewUserInfo({ ...newUserInfo, profileImages: files });
 
@@ -236,52 +279,6 @@ export const ReportsThreeStudy = () => {
     setNewInitialHold([]);
   };
 
-  const toStringInPy = async (data) => {
-    console.log(data, "toStringInPy");
-    const res = await fetch("http://localhost:5000/stringdb", {
-      method: "POST",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then((res) => res.json());
-    /* .then((res) => console.log(res)); */
-    const response = res;
-    console.log(response, "respOnsubmitstringdb");
-    let nodes = response
-      .map((item) => [item.preferredName_A, item.preferredName_B])
-      .flat(1)
-      .filter((value, index, self) => self.indexOf(value) === index) // valores unicos
-      .map((elem) => {
-        return { data: { id: elem, label: elem, type: "ip" } };
-      });
-
-    console.log(nodes, "dert ");
-
-    let edges = response.map((elem) => {
-      return {
-        data: { source: elem.preferredName_A, target: elem.preferredName_B },
-      };
-    });
-    console.log(edges, "forGr");
-
-    let namesDict = response.map((elem) => {
-      var o = {};
-      o[elem.preferredName_A] = elem.stringId_A
-        .split(/[.]/)
-        .slice(1, -1)
-        .toString();
-      return o;
-    });
-
-    console.log(namesDict, "NAMESDIC");
-
-    const me = { nodes: nodes, edges: edges };
-    console.log(me, "meeeee");
-    setDataToProviderForNetworkFiltered(me);
-  };
-
   const onConsolidate = async (data) => {
     console.log(data, "loqueseMandaEntres");
     const res = await fetch("http://localhost:5000/consolidate", {
@@ -294,44 +291,16 @@ export const ReportsThreeStudy = () => {
     }).then((res) => res.json());
     /* .then((res) => console.log(res)); */
     const response = res;
-    console.log(response, "objectLoquerecibeEntres");
+    /*  console.log(response, "objectLoquerecibeEntres"); */
     let averfilter = response.filter((obj) => finlist.includes(obj.genes));
-    console.log(averfilter, "FiltradoobjectLoquerecibeEntres");
-
-    /// adicionar lo de la lista consolidada
-
-    const filterByReference = (arr1, arr2) => {
-      let res = [];
-      res = arr1.filter((el) => {
-        return arr2.find((element) => {
-          return element.genes === el.genes;
-        });
-      });
-      let merged = [];
-
-      for (let i = 0; i < arr2.length; i++) {
-        merged.push({
-          lista1: arr2[i],
-          lista2: res.find((itmInner) => itmInner.genes === arr2[i].genes),
-        });
-      }
-      return merged;
-    };
-
-    let frt = filterByReference(consolidated, averfilter);
-    console.log(frt, "NuevoAverQQ");
 
     //setDataToProviderForNetworkFiltered(averfilter);
-    /// filtrado para fetc en python
-
-    let filteredArrNetForPyt = averfilter.map((value) => value.genes);
-    toStringInPy(filteredArrNetForPyt);
-    //let filteredArrNet = averfilter.map((value) => value.genes).join("%0d");
+    let filteredArrNet = averfilter.map((value) => value.genes).join("%0d");
     //let newFil = filteredArrNet.join("%0d");
 
-    //retrieved(filteredArrNet); // aqui se manda a string
+    retrieved(filteredArrNet); // aqui se manda a string
     //setDataToProviderForNetworkFiltered(filteredArrNet);
-    //console.log(filteredArrNet, "DECONSOLIDADORESPUESTA");
+    console.log(filteredArrNet, "DECONSOLIDADORESPUESTA");
     //setDataToProviderConsolidated(response);
   };
 
@@ -487,7 +456,7 @@ export const ReportsThreeStudy = () => {
       <TresDGraph />
       {/* <Network /> */}
       {/* <GraphCyt /> */}
-      {/* <NApp /> cytoscape */}
+      <NApp />
     </>
   );
 };

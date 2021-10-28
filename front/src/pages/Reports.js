@@ -623,7 +623,7 @@ export const ReportsOne = () => {
         <ListSection style={{ justifyContent: "center" }}>
           <MainButton onClick={consolidateLists}>
             <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-              Consolidate
+              ConsolidateUno
             </span>
           </MainButton>
         </ListSection>
@@ -950,7 +950,7 @@ export const ReportsTwo = () => {
         <ListSection style={{ justifyContent: "center" }}>
           <MainButton onClick={sendConsolid}>
             <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-              Consolidate
+              ConsolidateDos
             </span>
           </MainButton>
         </ListSection>

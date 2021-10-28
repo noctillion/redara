@@ -20,7 +20,7 @@ function App() {
   const [forNetworkFiltered, setForNetworkFiltered] = useState([]);
 
   console.log(interselect, "iiiiiiinnnterrrrrr");
-  console.log(consolidated, "consolidated");
+  //console.log(consolidated, "consolidated");
   //console.log(filteredR, "RRRRinterselectRRRRR");
   let setDataToProviderClicked = (forState) => {
     setClicked(forState);
