@@ -62,7 +62,8 @@ export const FocusGraphDos = () => {
   const [searchName, setSearchName] = useState("");
   console.log(searchName, "searchName");
   console.log(nodeAmount, "nodeAmount");
-  const [busqueda, setBusqueda] = useState("MDHAR");
+  const [busqueda, setBusqueda] = useState(["MDHAR"]);
+  const [search, setSearch] = useState(false);
 
   /*  let call = useCallback(() => {
     fgRef.current.refresh();
@@ -371,7 +372,7 @@ export const FocusGraphDos = () => {
     [fgRef]
   );
 
-  let getNodeEsp = useCallback(
+  /*   let getNodeEsp = useCallback(
     (node) => {
       for (let i = 0; i < busqueda.length; i++) {
         if (busqueda[i] === node.id) {
@@ -380,19 +381,26 @@ export const FocusGraphDos = () => {
       }
     },
     [busqueda]
+  ); */
+
+  const getNodeEsp = useCallback(
+    (node) => {
+      for (let i = 0; i < busqueda.length; i++) {
+        if (busqueda[i] === node.id.toLowerCase()) {
+          return "orange";
+        }
+      }
+    },
+    [busqueda]
   );
+
+  const handleClickNode = () => {
+    setSearch(!search);
+  };
 
   const handleSearch = (event) => {
     let value = event.target.value.toLowerCase();
-    let result = [];
-    console.log(value);
-    if (forManipulation.nodes !== undefined) {
-      result = forManipulation.nodes.filter((data) => {
-        return data.label.search(value) !== -1;
-      });
-    }
-
-    console.log(result, "result");
+    setBusqueda([value]);
   };
 
   /* 
@@ -465,7 +473,8 @@ export const FocusGraphDos = () => {
               linkResolution="10"
               nodeOpacity={nodeAmount}
               //nodeColor={(node) => (node.id === "HSP101" ? "orange" : "white")}
-              nodeColor={handleNodeColor}
+              //nodeColor={handleNodeColor}
+              nodeColor={search ? getNodeEsp : handleNodeColor}
               nodeVal={(node) => node.node_size1 / 800}
               //nodeColor="#ff0000"
               //nodeColor={(node) => console.log(node.node_colorA)}
@@ -515,11 +524,8 @@ export const FocusGraphDos = () => {
                 value={searchName}
                 onChange={onChangeHandler}
               />
-              <SearchBar
-                placeholder="Search"
-                onChange={(e) => console.log(e.target.value)}
-              />
-              <button onClick={getNodeEsp}>Search</button>
+              <SearchBar placeholder="Search" onChange={handleSearch} />
+              <button onClick={handleClickNode}>Search</button>
             </div>
 
             <div
