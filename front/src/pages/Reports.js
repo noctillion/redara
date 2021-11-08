@@ -7,7 +7,13 @@ import { useHistory } from "react-router-dom";
 import { NameContext } from "../App";
 import FileUpload from "../components/fileupload/FileUpload";
 import ScatterBasic from "../components/scatterbasic/scatter";
-import Heatmapchart from "../components/heatmapbasic/heatmapchart";
+/* import Heatmapchart from "../components/heatmapbasic/heatmapchart"; */
+import MainHeat from "../components/heatmapMio/mainHeat";
+//import FilterComp from "../components/filter/filter";
+import FilterDos from "../components/filterDod/filterDos";
+import CardIntersection from "../components/cardInter/cardIntersection";
+
+import { ReportsThreeStudy } from "../forstudy/tres";
 
 const ListSectionCont = styled.div`
   width: 100%;
@@ -33,6 +39,7 @@ const ListSection = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
+
     //width: 100%;
   }
 `;
@@ -156,16 +163,27 @@ const ChartCont = styled.div`
   height: 400px;
   font-size: 1rem;
   justify-content: space-between;
-  border: 1px solid red;
+  /* border: 1px solid red; */
   /*   margin-left: 5vw;
   margin-right: 5vw; */
   @media (max-width: 768px) {
     width: 400px;
     height: 300px;
     justify-content: center;
-    margin: 0;
+
     //width: 100%;
   }
+`;
+
+const CardsContainer = styled.div`
+  display: flex;
+  background-color: rgb(165, 170, 160, 0.2);
+  border-radius: 0px 0px 5px 5px;
+  width: 100%;
+  align-items: center;
+  height: fit-content;
+  flex-wrap: wrap;
+  padding-right: 10px;
 `;
 
 /* const GraphCont = styled.div`
@@ -178,6 +196,18 @@ const ChartCont = styled.div`
     justify-content: center;
     //width: 100%;
   }
+`; */
+
+/* const CardIntersection = styled.div`
+  display: flex;
+  border: 1px solid black;
+  flex-direction: column;
+  font-size: 1rem;
+  border-radius: 5px;
+  background-color: rgb(229, 206, 156, 0.5);
+  padding: 5px;
+  margin-left: 10px;
+  margin-bottom: 10px;
 `; */
 
 export const Reports = () => {
@@ -201,6 +231,8 @@ export const ReportsOne = () => {
     setDataToProviderClicked,
     setDataToProviderConsolidated,
     setDataToProviderMds,
+    setDataToProviderFisher,
+    setDataToProviderInterselect,
   } = useContext(NameContext);
   const [newData, setNewData] = useState([]);
   const [newInitialHold, setNewInitialHold] = useState([]);
@@ -312,6 +344,53 @@ export const ReportsOne = () => {
     setDataToProviderMds(response);
   };
 
+  const onFisher = async (data) => {
+    const res = await fetch("http://localhost:5000/listsfisher", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    /* .then((res) => console.log(res)); */
+    /* const response = res; */
+
+    const forFishD = (objectArray, property) => {
+      const resdos = objectArray.map((obj) => {
+        let cosa = Object.values(obj);
+        let cosa2 = Object.keys(obj);
+        /*  return {
+          pval: cosa.map((obj) => obj.pval),
+          overlap: cosa.map((obj) => obj.overlap),
+        }; */
+        //return cosa.map((obj) => obj.overlap);
+        return cosa.map((obj, index) => {
+          return {
+            /* forD: { pval: obj.pval, overlap: obj.overlap, id: obj.id },
+            algo: obj, */
+            forD: obj,
+            forF: cosa2[index],
+          };
+        });
+      });
+      return resdos;
+    };
+    //console.log(res, "respp");
+    const response = forFishD(res);
+    //console.log(response, "ponse");
+
+    setDataToProviderFisher(response);
+    /*     const resdos = response.map((obj) => {
+      let cosa = Object.values(obj);
+      return {
+        pv: cosa.map((obj) => obj.pval),
+        overl: cosa.map((obj) => obj.overlap),
+      };
+    });
+    console.log(resdos); */
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit(newUserInfo);
@@ -377,10 +456,12 @@ export const ReportsOne = () => {
     if (dede.length === unuq.length) {
       onConsolidate(carray);
       onMDS(carray);
+      onFisher(carray);
       routeChange();
-    } else {
+      setDataToProviderInterselect([]);
+    } /* else {
       return console.log("repeated cols");
-    }
+    } */
   };
 
   /* const listOut = (val) => { */
@@ -449,6 +530,7 @@ export const ReportsOne = () => {
       </ListSectionCont>
       <ListSectionCont>
         <ListUpTitle>Lists upload</ListUpTitle>
+        {/* aqui */}
         <ListSection>
           {newData.length > 0 ? (
             <>
@@ -541,7 +623,7 @@ export const ReportsOne = () => {
         <ListSection style={{ justifyContent: "center" }}>
           <MainButton onClick={consolidateLists}>
             <span style={{ marginLeft: "10px", marginRight: "10px" }}>
-              Consolidate
+              ConsolidateUno
             </span>
           </MainButton>
         </ListSection>
@@ -552,9 +634,64 @@ export const ReportsOne = () => {
 };
 
 export const ReportsTwo = () => {
-  const { consolidated, mds } = useContext(NameContext);
+  const {
+    consolidated,
+    mds,
+    fisher,
+    filteredR,
+    interselect,
+    setDataToProviderFinlist,
+  } = useContext(NameContext);
   const [groupB, setGroupB] = useState([]);
+  const [ppp, setPpp] = useState({});
+  const [consolBylist, setConsolBylist] = useState([]);
+  const [totalListCon, setTotalListCon] = useState([]);
+  //console.log(consolBylist, "fff");
 
+  ///console.log(filteredR, "filteredR filteredR filteredR ");
+
+  const history = useHistory();
+
+  const routeChangeDos = () => {
+    let path = `/lists/lists3`;
+    history.push(path);
+  };
+
+  /* const [cdf, setCdf] = useState([]); */
+  //console.log(groupB, "filterOne");
+
+  /*   let fgi = groupB.filter((elem) => {
+    return elem.overlist > 2;
+  }); */
+  ///console.log(fgi, "pppopp");
+
+  useEffect(() => {
+    if (fisher.length > 0) {
+      let yoi = fisher.map((elem) => {
+        return elem.map((ob) => {
+          return ob.forF;
+        });
+      });
+
+      /* setPpp(Object.keys(fisher[0])); */
+      setPpp(yoi[0]);
+    }
+    /*     const forFish = (objectArray, property) => {
+      const resdos = objectArray.map((obj) => {
+        let cosa = Object.values(obj);
+
+        return cosa.map((obj) => {
+          return { pval: obj.pval, overlap: obj.overlap };
+        });
+      });
+      return resdos;
+    };
+
+    let cdf = forFish(fisher);
+    setCdf(cdf); */
+  }, [fisher]);
+
+  //console.log(ppp, "fish");
   /*   const data = [
     { x: 0.0, y: -4.0, z: 200 },
     { x: -0.333333, y: 4.0, z: 260 },
@@ -587,8 +724,89 @@ export const ReportsTwo = () => {
 
   useEffect(() => {
     const hh = groupBy(consolidated, "total");
-    setGroupB(hh);
+    setGroupB(hh.map((n, i) => ({ ...n, id: i + 1 })));
   }, [consolidated]);
+
+  /*   useEffect(() => {
+    let sumInt = interselect.reduce(
+      (accumulator, current) => accumulator + current.overlap,
+      0
+    );
+    console.log(sumInt);
+  }, [interselect]); */
+  //let bals = [];
+  /*   useEffect(() => {
+    if (interselect.length > 0) {
+      //const sumGen = interselect.map((n) => n.size).reduce((a, b) => a + b, 0);
+      const genesListFil = interselect.map((n) => {
+        return n.intersect; //.map((nj) => nj);
+      });
+
+      var merged = [].concat
+        .apply([], genesListFil)
+        .filter((v, i, a) => a.indexOf(v) === i);
+
+      //bals.push(merged);
+    }
+    setConsolBylist(merged);
+  }, [interselect, consolBylist]); */
+
+  const SummatoryList = (inter) => {
+    if (inter.length > 0) {
+      //const sumGen = interselect.map((n) => n.size).reduce((a, b) => a + b, 0);
+      const genesListFil = inter.map((n) => {
+        return n.intersect; //.map((nj) => nj);
+      });
+      var merged = [].concat
+        .apply([], genesListFil)
+        .filter((v, i, a) => a.indexOf(v) === i);
+      return merged;
+    }
+  };
+
+  useEffect(() => {
+    let ftyu = SummatoryList(interselect);
+    setConsolBylist(ftyu);
+    //console.log(ftyu, "objectOOO");
+  }, [interselect]);
+
+  let totalListFun = (arr1, arr2) => {
+    let far1 = () => {
+      if (arr1 === undefined || arr1 === null) {
+        return (arr1 = []);
+      } else {
+        return arr1;
+      }
+    };
+
+    let far2 = () => {
+      if (arr2 === undefined || arr2 === null) {
+        return (arr2 = []);
+      } else {
+        return arr2;
+      }
+    };
+    let marr1 = far1();
+    //console.log(marr1, "marr1");
+    let marr2 = far2();
+    //console.log(marr2, "marr2");
+    let combinedArray = [...marr1, ...marr2.flat()].filter(
+      (v, i, a) => a.indexOf(v) === i
+    );
+    return combinedArray;
+  };
+
+  useEffect(() => {
+    let totListr = totalListFun(consolBylist, filteredR);
+
+    setTotalListCon(totListr);
+  }, [consolBylist, filteredR]);
+
+  let sendConsolid = () => {
+    setDataToProviderFinlist(totalListCon);
+    routeChangeDos();
+    /// console.log(totalListCon, "aqi");
+  };
 
   /*   const te = Object.entries(hh).map((elem) =>
     Object.fromEntries(
@@ -615,20 +833,139 @@ export const ReportsTwo = () => {
             <ScatterBasic data={mds} />
           </ChartCont>
         </ListSection>
+        <ListSection style={{ marginTop: "5px", backgroundColor: "#FFFFFF" }}>
+          <div
+            style={{
+              display: "flex",
+              backgroundColor: "rgb(165, 170, 160, 0.2)",
+              borderRadius: "5px",
+              width: "100%",
+              alignItems: "center",
+              paddingTop: "2vh",
+              paddingBottom: "2vh",
+            }}
+          >
+            {filteredR !== null && filteredR.length > 0 ? (
+              <ListUpTitle
+                style={{
+                  //border: "1px solid black",
+                  margin: 0,
+                  marginLeft: "10px",
+                }}
+              >
+                Selected genes by lists overlap: {filteredR[0].length}
+              </ListUpTitle>
+            ) : (
+              <ListUpTitle
+                style={{
+                  //border: "1px solid black",
+                  margin: 0,
+                  marginLeft: "10px",
+                }}
+              >
+                Select genes by overlap frequency
+              </ListUpTitle>
+            )}
+
+            {/* <FilterComp items={groupB} /> */}
+            <FilterDos items={groupB} />
+          </div>
+        </ListSection>
+      </ListSectionCont>
+
+      {/*      <ListSectionCont>
+        <ListSection>
+          <Heatmapchart datam={fisher} />
+        </ListSection>
+      </ListSectionCont> */}
+      <ListSectionCont>
+        <ListUpTitle>Include specific lists or intersections</ListUpTitle>
+        <ListSectionCont
+          style={{
+            display: "flex",
+          }}
+        >
+          <ListSection
+            style={{
+              justifyContent: "space-between",
+              //border: "1px solid red",
+              height: "fit-content",
+              //height: "auto",
+              overflow: "hidden", //auto
+              paddingBottom: "100px",
+            }}
+          >
+            <MainHeat datam={fisher} names={ppp} />
+            {/* <div style={{ width: "15%", backgroundColor: "red" }}>lists</div> */}
+          </ListSection>
+        </ListSectionCont>
+        {/* dsdsd */}
+
+        {consolBylist ? (
+          <>
+            <ListSection
+              style={{ marginTop: "5px", backgroundColor: "#FFFFFF" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  backgroundColor: "rgb(165, 170, 160, 0.2)",
+                  borderRadius: "5px 5px 0px 0px",
+                  width: "100%",
+                  alignItems: "center",
+                  paddingTop: "2vh",
+                  paddingBottom: "2vh",
+                }}
+              >
+                <ListUpTitle
+                  style={{
+                    //border: "1px solid black",
+                    margin: 0,
+                    marginLeft: "10px",
+                  }}
+                >
+                  Selected genes by lists overlappppppyy {consolBylist.length}
+                </ListUpTitle>
+
+                {/* <FilterComp items={groupB} /> */}
+              </div>
+              <CardsContainer>
+                {interselect.map((elem) => {
+                  return (
+                    <CardIntersection
+                      key={elem.id}
+                      list1={elem.list1}
+                      list2={elem.list2}
+                      intersect={elem.overlap}
+                    />
+                  );
+                })}
+              </CardsContainer>
+            </ListSection>
+          </>
+        ) : null}
       </ListSectionCont>
       <ListSectionCont>
-        <ListSection>
-          <Heatmapchart />
+        <ListUpTitle>Total selected genes: {totalListCon.length}</ListUpTitle>
+        <ListSection style={{ justifyContent: "center" }}>
+          <MainButton onClick={sendConsolid}>
+            <span style={{ marginLeft: "10px", marginRight: "10px" }}>
+              ConsolidateDos
+            </span>
+          </MainButton>
         </ListSection>
+        <ListUpTitle />
       </ListSectionCont>
     </>
   );
 };
 
 export const ReportsThree = () => {
+  //const [authors, setAuthors] = useState([]);
+
   return (
-    <div className="reports">
-      <h1>Reports/reports3</h1>
-    </div>
+    <>
+      <ReportsThreeStudy />
+    </>
   );
 };

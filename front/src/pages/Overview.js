@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+//import Background from "../assets/Untitled SD.mp4";
 import Background from "../assets/Cvi-0.jpg";
 
 const OverWrap = styled.div`
@@ -59,6 +60,22 @@ const LogoImage = styled.img`
   /* transform: translate(-50%, -50%); */
 `;
 
+const Logovideo = styled.video`
+  width: 100%;
+  //height: 99.9vh;
+  min-height: 100%;
+  justify-items: center;
+  margin: 0;
+  /*  background-position: right 15% bottom 45%; */
+  ///https://lewislab.berkeley.edu/media-gallery/detail/1886/4906
+  position: fixed;
+  margin-left: -1px;
+  background-position: center center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  opacity: 0.9;
+`;
+
 const MainButton = styled(Link)`
   margin-top: 5vh;
   display: flex;
@@ -97,6 +114,9 @@ const Overview = () => {
   return (
     <>
       <OverWrap>
+        <Logovideo autoPlay loop muted>
+          <source src={Background} type="video/mp4" />
+        </Logovideo>
         <LogoImage />
         <OverCenter>
           <NewDiv>Comparison of redox-related overlapped networks</NewDiv>

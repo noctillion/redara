@@ -13,8 +13,16 @@ function App() {
   const [clicked, setClicked] = useState(false);
   const [consolidated, setConsolidated] = useState([]);
   const [mds, setMds] = useState([]);
+  const [fisher, setFisher] = useState([]);
+  const [interselect, setInterselect] = useState([]);
+  const [filteredR, setFilteredR] = useState(null);
+  const [finlist, setFinlist] = useState([]);
+  const [forNetworkFiltered, setForNetworkFiltered] = useState([]);
+  const [forNewNet, setForNewNet] = useState({});
 
-  //console.log(consolidated);
+  console.log(forNewNet, "forNewNetiiiiiiinnnterrrrrr");
+  //console.log(consolidated, "consolidated");
+  //console.log(filteredR, "RRRRinterselectRRRRR");
   let setDataToProviderClicked = (forState) => {
     setClicked(forState);
   };
@@ -23,6 +31,27 @@ function App() {
   };
   let setDataToProviderMds = (forState) => {
     setMds(forState);
+  };
+  let setDataToProviderFisher = (forState) => {
+    setFisher(forState);
+  };
+  let setDataToProviderInterselect = (forState) => {
+    setInterselect(forState);
+  };
+  let setDataToProviderFilteredR = (forState) => {
+    setFilteredR(forState);
+  };
+
+  let setDataToProviderFinlist = (forState) => {
+    setFinlist(forState);
+  };
+
+  let setDataToProviderForNetworkFiltered = (forState) => {
+    setForNetworkFiltered(forState);
+  };
+
+  let setDataToProviderForNewNet = (forState) => {
+    setForNewNet(forState);
   };
 
   /*   const processRaw = (response) => {
@@ -68,6 +97,7 @@ function App() {
 
   useEffect(() => {
     fetchD();
+    setForNewNet({}); // blanquea lo que estaba
   }, []);
 
   return (
@@ -77,14 +107,28 @@ function App() {
         clicked,
         consolidated,
         mds,
+        fisher,
+        interselect,
+        filteredR,
+        finlist,
+        forNetworkFiltered,
+        forNewNet,
         setDataToProviderClicked: setDataToProviderClicked,
         setDataToProviderConsolidated: setDataToProviderConsolidated,
         setDataToProviderMds: setDataToProviderMds,
+        setDataToProviderFisher: setDataToProviderFisher,
+        setDataToProviderInterselect: setDataToProviderInterselect,
+        setDataToProviderFilteredR: setDataToProviderFilteredR,
+        setDataToProviderFinlist: setDataToProviderFinlist,
+        setDataToProviderForNetworkFiltered:
+          setDataToProviderForNetworkFiltered,
+        setDataToProviderForNewNet: setDataToProviderForNewNet,
       }}
     >
       <Router>
         <Sidebar />
         <Switch>
+          <Route path="/" exact component={Overview} />
           <Route path="/overview" exact component={Overview} />
           <Route path="/lists" exact component={Reports} />
           <Route path="/lists/lists1" exact component={ReportsOne} />

@@ -1,0 +1,980 @@
+{
+  "style": [
+    {
+      "selector": "node",
+      "style": {
+        "background-color": "#ad1a66"
+      }
+    },
+    {
+      "selector": "edge",
+      "style": {
+        "width": 3,
+        "line-color": "#ad1a66"
+      }
+    }
+  ],
+  "elements": [
+
+    {
+      "data": {
+        "id": "e22",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph9",
+        "target": "glyph8",
+        "portsource": "glyph9",
+        "porttarget": "glyph8"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e23",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph0",
+        "target": "glyph8",
+        "portsource": "glyph0",
+        "porttarget": "glyph8"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e24",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph8",
+        "target": "glyph1",
+        "portsource": "glyph8",
+        "porttarget": "glyph1"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e25",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph6",
+        "target": "glyph8",
+        "portsource": "glyph6",
+        "porttarget": "glyph8"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e26",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph8",
+        "target": "glyph7",
+        "portsource": "glyph8",
+        "porttarget": "glyph7"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e27",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph11",
+        "target": "glyph12",
+        "portsource": "glyph11",
+        "porttarget": "glyph12"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e28",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph13",
+        "target": "glyph11",
+        "portsource": "glyph13",
+        "porttarget": "glyph11"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e29",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph1",
+        "target": "glyph10",
+        "portsource": "glyph1",
+        "porttarget": "glyph10"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e30",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph10",
+        "target": "glyph2",
+        "portsource": "glyph10",
+        "porttarget": "glyph2"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e31",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph2",
+        "target": "glyph11",
+        "portsource": "glyph2",
+        "porttarget": "glyph11"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e32",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph11",
+        "target": "glyph3",
+        "portsource": "glyph11",
+        "porttarget": "glyph3"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e33",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph14",
+        "target": "glyph4",
+        "portsource": "glyph14",
+        "porttarget": "glyph4"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e34",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph15",
+        "target": "glyph14",
+        "portsource": "glyph15",
+        "porttarget": "glyph14"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e35",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph3",
+        "target": "glyph16",
+        "portsource": "glyph3",
+        "porttarget": "glyph16"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e36",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph16",
+        "target": "glyph5",
+        "portsource": "glyph16",
+        "porttarget": "glyph5"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e37",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph16",
+        "target": "glyph4",
+        "portsource": "glyph16",
+        "porttarget": "glyph4"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e38",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph17",
+        "target": "glyph10",
+        "portsource": "glyph17",
+        "porttarget": "glyph10"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e39",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph19",
+        "target": "glyph11",
+        "portsource": "glyph19",
+        "porttarget": "glyph11"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e40",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph18",
+        "target": "glyph16",
+        "portsource": "glyph18",
+        "porttarget": "glyph16"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e41",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph22",
+        "target": "glyph20",
+        "portsource": "glyph22",
+        "porttarget": "glyph20"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e42",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph4",
+        "target": "glyph20",
+        "portsource": "glyph4",
+        "porttarget": "glyph20"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e43",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph20",
+        "target": "glyph21",
+        "portsource": "glyph20",
+        "porttarget": "glyph21"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e44",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph23",
+        "target": "glyph20",
+        "portsource": "glyph23",
+        "porttarget": "glyph20"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e45",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph24",
+        "target": "glyph20",
+        "portsource": "glyph24",
+        "porttarget": "glyph20"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e46",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph20",
+        "target": "glyph25",
+        "portsource": "glyph20",
+        "porttarget": "glyph25"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e47",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph20",
+        "target": "glyph26",
+        "portsource": "glyph20",
+        "porttarget": "glyph26"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e48",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph35",
+        "target": "glyph31",
+        "portsource": "glyph35",
+        "porttarget": "glyph31"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e49",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph36",
+        "target": "glyph32",
+        "portsource": "glyph36",
+        "porttarget": "glyph32"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e50",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph37",
+        "target": "glyph33",
+        "portsource": "glyph37",
+        "porttarget": "glyph33"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e51",
+        "sbgnclass": "catalysis",
+        "sbgncardinality": 0,
+        "source": "glyph38",
+        "target": "glyph34",
+        "portsource": "glyph38",
+        "porttarget": "glyph34"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e52",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph21",
+        "target": "glyph31",
+        "portsource": "glyph21",
+        "porttarget": "glyph31"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e53",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph42",
+        "target": "glyph31",
+        "portsource": "glyph42",
+        "porttarget": "glyph31"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e54",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph31",
+        "target": "glyph41",
+        "portsource": "glyph31",
+        "porttarget": "glyph41"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e55",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph31",
+        "target": "glyph27",
+        "portsource": "glyph31",
+        "porttarget": "glyph27"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e56",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph27",
+        "target": "glyph32",
+        "portsource": "glyph27",
+        "porttarget": "glyph32"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e57",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph32",
+        "target": "glyph28",
+        "portsource": "glyph32",
+        "porttarget": "glyph28"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e58",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph28",
+        "target": "glyph33",
+        "portsource": "glyph28",
+        "porttarget": "glyph33"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e59",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph33",
+        "target": "glyph43",
+        "portsource": "glyph33",
+        "porttarget": "glyph43"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e60",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph33",
+        "target": "glyph29",
+        "portsource": "glyph33",
+        "porttarget": "glyph29"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e61",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph29",
+        "target": "glyph34",
+        "portsource": "glyph29",
+        "porttarget": "glyph34"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e62",
+        "sbgnclass": "consumption",
+        "sbgncardinality": 0,
+        "source": "glyph39",
+        "target": "glyph34",
+        "portsource": "glyph39",
+        "porttarget": "glyph34"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e63",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph34",
+        "target": "glyph40",
+        "portsource": "glyph34",
+        "porttarget": "glyph40"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e64",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph34",
+        "target": "glyph30",
+        "portsource": "glyph34",
+        "porttarget": "glyph30"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e65",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph14",
+        "target": "glyph5",
+        "portsource": "glyph14",
+        "porttarget": "glyph5"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e66",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph33",
+        "target": "glyph35",
+        "portsource": "glyph33",
+        "porttarget": "glyph35"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e67",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph13",
+        "target": "glyph22",
+        "portsource": "glyph13",
+        "porttarget": "glyph22"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e68",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph17",
+        "target": "glyph6",
+        "portsource": "glyph17",
+        "porttarget": "glyph6"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    },
+    {
+      "data": {
+        "id": "e69",
+        "sbgnclass": "production",
+        "sbgncardinality": 0,
+        "source": "glyph25",
+        "target": "glyph27",
+        "portsource": "glyph25",
+        "porttarget": "glyph27"
+      },
+      "position": {},
+      "group": "edges",
+      "removed": false,
+      "selected": false,
+      "selectable": true,
+      "locked": false,
+      "grabbed": false,
+      "grabbable": true,
+      "classes": ""
+    }
+  ]
+}
