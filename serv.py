@@ -12,6 +12,9 @@ import skbio
 import scipy.stats as stats
 from decimal import Decimal as D
 import requests
+import networkx as nx
+from networkx.readwrite import json_graph;
+from functForNet import *
 
 
 app = Flask(__name__)
@@ -249,7 +252,8 @@ def ToDfObjAWMat():### aqui esta recibe json
 ### funcion para string request
 def stringReq(protein_list):
   proteins = '%0d'.join(protein_list)
-  url = 'https://string-db.org/api/tsv/network?identifiers=' + proteins + '&species=3702'
+ 
+  url = 'https://string-db.org/api/tsv/network?identifiers=' + proteins + '&species=3702' + '&required_score=400'
   r = requests.get(url)
   return r
 
@@ -272,14 +276,63 @@ def interacTable(r):
 # route function
 def retrieveFromString():
   dic = request.get_json()
-  ra=stringReq(dic)
+  valk = []
+  for i in dic:
+    valk.append(i['genes'])
+  ra=stringReq(valk)
   intera =interacTable(ra)
   jsca =  intera.to_dict(orient = 'records')##este
   jslisa= json.dumps(jsca)
   return(jslisa)
 
-  
- 
+
+
+
+ # route 
+@app.route('/stringdball', methods=['POST'])##
+@cross_origin()
+# route function
+def jsonToNetTV2():
+  loquwserecibeV2 = request.get_json()
+  valk = []
+  for i in loquwserecibeV2:
+    valk.append(i['genes'])
+  r= stringReq(valk)
+  interactions = interacTable(r)
+  nameDic = namesDict(interactions)
+  dicGroups= groupDict(loquwserecibeV2)
+
+  G = netwObject(interactions)
+  ##T = nx.minimum_spanning_tree(G)
+  elh = transformGarrayV3(G)## se escogen valores para recalibrar el tamano de nodos
+  finalNodes= finalArrayNod(elh,loquwserecibeV2,nameDic,dicGroups)
+  mydict = {}
+  mydict['nodes'] = finalNodes
+  mydict['links'] = json_graph.node_link_data(G)['links']
+  return(mydict)
+
+# route 
+@app.route('/stringdballt', methods=['POST'])##
+@cross_origin()
+# route function
+def jsonToNetTV3():
+  loquwserecibeV2 = request.get_json()
+  valk = []
+  for i in loquwserecibeV2:
+    valk.append(i['genes'])
+  r= stringReq(valk)
+  interactions = interacTable(r)
+  nameDic = namesDict(interactions)
+  dicGroups= groupDict(loquwserecibeV2)
+
+  G = netwObject(interactions)
+  T = nx.minimum_spanning_tree(G)
+  elh = transformGarrayV3(G)## se escogen valores para recalibrar el tamano de nodos
+  finalNodes= finalArrayNod(elh,loquwserecibeV2,nameDic,dicGroups)
+  mydict = {}
+  mydict['nodes'] = finalNodes
+  mydict['links'] = json_graph.node_link_data(T)['links']
+  return(mydict)
  
 
 

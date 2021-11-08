@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-hook/window-size": "^3.0.7",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -15,6 +16,7 @@
     "dom-to-image": "^2.6.0",
     "dom-to-image-more": "^2.9.1",
     "file-saver": "^2.0.5",
+    "fuse.js": "^6.4.6",
     "react": "^17.0.2",
     "react-cytoscapejs": "^1.2.1",
     "react-d3-graph": "^2.6.0",
@@ -25,6 +27,7 @@
     "react-icons": "^4.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "react-sizeme": "^3.0.2",
     "recharts": "^2.1.2",
     "styled-components": "^5.2.1",
     "three": "^0.133.1",

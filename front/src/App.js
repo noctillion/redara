@@ -18,8 +18,9 @@ function App() {
   const [filteredR, setFilteredR] = useState(null);
   const [finlist, setFinlist] = useState([]);
   const [forNetworkFiltered, setForNetworkFiltered] = useState([]);
+  const [forNewNet, setForNewNet] = useState({});
 
-  console.log(interselect, "iiiiiiinnnterrrrrr");
+  console.log(forNewNet, "forNewNetiiiiiiinnnterrrrrr");
   //console.log(consolidated, "consolidated");
   //console.log(filteredR, "RRRRinterselectRRRRR");
   let setDataToProviderClicked = (forState) => {
@@ -47,6 +48,10 @@ function App() {
 
   let setDataToProviderForNetworkFiltered = (forState) => {
     setForNetworkFiltered(forState);
+  };
+
+  let setDataToProviderForNewNet = (forState) => {
+    setForNewNet(forState);
   };
 
   /*   const processRaw = (response) => {
@@ -92,6 +97,7 @@ function App() {
 
   useEffect(() => {
     fetchD();
+    setForNewNet({}); // blanquea lo que estaba
   }, []);
 
   return (
@@ -106,6 +112,7 @@ function App() {
         filteredR,
         finlist,
         forNetworkFiltered,
+        forNewNet,
         setDataToProviderClicked: setDataToProviderClicked,
         setDataToProviderConsolidated: setDataToProviderConsolidated,
         setDataToProviderMds: setDataToProviderMds,
@@ -115,11 +122,13 @@ function App() {
         setDataToProviderFinlist: setDataToProviderFinlist,
         setDataToProviderForNetworkFiltered:
           setDataToProviderForNetworkFiltered,
+        setDataToProviderForNewNet: setDataToProviderForNewNet,
       }}
     >
       <Router>
         <Sidebar />
         <Switch>
+          <Route path="/" exact component={Overview} />
           <Route path="/overview" exact component={Overview} />
           <Route path="/lists" exact component={Reports} />
           <Route path="/lists/lists1" exact component={ReportsOne} />

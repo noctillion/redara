@@ -1,4 +1,5 @@
 import React from "react";
+import { FocusGraphDos } from "./FourDGraphFoc";
 /* import {
   ForceGraph2D,
   ForceGraph3D,
@@ -23,7 +24,9 @@ const TresDGraph = () => {
     <>
       {/* <ForceGraph3D graphData={myData} /> */}
       {/* <ForceGraph3D graphData={genRandomTree()} /> */}
-      <FocusGraph />
+      {/* <FocusGraph /> */}
+
+      <FocusGraphDos />
     </>
   );
 };

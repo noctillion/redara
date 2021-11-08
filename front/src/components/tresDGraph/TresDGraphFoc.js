@@ -10,7 +10,7 @@ import * as THREE from "three";
 import Canvas2Image from "../../utils/canvasSave";
 import SpriteText from "three-spritetext";
 import { ForceGraph3D } from "react-force-graph";
-
+import { useWindowSize } from "@react-hook/window-size";
 import { NameContext } from "../../App";
 
 /* 
@@ -41,8 +41,9 @@ export const FocusGraph = () => {
   const { forNetworkFiltered } = useContext(NameContext);
   console.log(forNetworkFiltered, "forNetworkFilteredforNetworkFiltered");
   const [graphData, setGraphData] = useState({});
+  console.log(graphData, "graphDataLoqueentraAlaGrafica");
   // const [layout, setLayout] = useState([]);
-
+  const [width, height] = useWindowSize();
   useEffect(() => {
     /*     forNetworkFiltered.links = forNetworkFiltered.edges; // on object create new key name. Assign old value to this
     delete forNetworkFiltered.edges; */
@@ -130,6 +131,7 @@ export const FocusGraph = () => {
         <>
           <ForceGraph3D
             ref={fgRef}
+            width={width}
             graphData={graphData}
             nodeLabel="id"
             nodeAutoColorBy="group"

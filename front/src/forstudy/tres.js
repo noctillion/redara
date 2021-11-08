@@ -161,6 +161,7 @@ export const ReportsThreeStudy = () => {
     consolidated,
     setDataToProviderForNetworkFiltered,
     setDataToProviderInterselect,
+    setDataToProviderForNewNet,
   } = useContext(NameContext);
   const [newData, setNewData] = useState([]);
   const [newInitialHold, setNewInitialHold] = useState([]);
@@ -282,6 +283,26 @@ export const ReportsThreeStudy = () => {
     setDataToProviderForNetworkFiltered(me);
   };
 
+  const toStringInPyDos = async (data) => {
+    console.log(JSON.stringify(data), "DATAtoStringInPy");
+    const res = await fetch("http://localhost:5000/stringdball", {
+      method: "POST",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => res.json());
+    /* .then((res) => console.log(res)); */
+    const response = res;
+    console.log(response, "respOnALL");
+    setDataToProviderForNewNet(response);
+
+    //const me = { nodes: nodes, edges: edges };
+    //console.log(me, "meeeee");
+    //setDataToProviderForNetworkFiltered(me);
+  };
+
   const onConsolidate = async (data) => {
     console.log(data, "loqueseMandaEntres");
     const res = await fetch("http://localhost:5000/consolidate", {
@@ -301,18 +322,22 @@ export const ReportsThreeStudy = () => {
     /// adicionar lo de la lista consolidada
 
     const filterByReference = (arr1, arr2) => {
-      let res = [];
+      /*      let res = [];
       res = arr1.filter((el) => {
         return arr2.find((element) => {
           return element.genes === el.genes;
         });
-      });
+      }); */
       let merged = [];
 
       for (let i = 0; i < arr2.length; i++) {
+        let tempOb = arr1.find((itmInner) => itmInner.genes === arr2[i].genes);
+
         merged.push({
-          lista1: arr2[i],
-          lista2: res.find((itmInner) => itmInner.genes === arr2[i].genes),
+          //lista1: { gestf: arr2[i].genes, nautor: arr2[i].author },
+          //lista2: arr1.find((itmInner) => itmInner.genes === arr2[i].genes),
+          ...tempOb,
+          authQuery: arr2[i].author,
         });
       }
       return merged;
@@ -324,8 +349,9 @@ export const ReportsThreeStudy = () => {
     //setDataToProviderForNetworkFiltered(averfilter);
     /// filtrado para fetc en python
 
-    let filteredArrNetForPyt = averfilter.map((value) => value.genes);
-    toStringInPy(filteredArrNetForPyt);
+    //let filteredArrNetForPyt = averfilter.map((value) => value.genes);
+    toStringInPy(frt);
+    toStringInPyDos(frt);
     //let filteredArrNet = averfilter.map((value) => value.genes).join("%0d");
     //let newFil = filteredArrNet.join("%0d");
 
