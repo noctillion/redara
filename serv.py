@@ -300,7 +300,7 @@ def jsonToNetTV2():
   r= stringReq(valk)
   interactions = interacTable(r)
   nameDic = namesDict(interactions)
-  dicGroups= groupDict(loquwserecibeV2)
+  dicGroups= groupDict(loquwserecibeV2,'authQuery')
 
   G = netwObject(interactions)
   ##T = nx.minimum_spanning_tree(G)
@@ -323,7 +323,7 @@ def jsonToNetTV3():
   r= stringReq(valk)
   interactions = interacTable(r)
   nameDic = namesDict(interactions)
-  dicGroups= groupDict(loquwserecibeV2)
+  dicGroups= groupDict(loquwserecibeV2,'authQuery')
 
   G = netwObject(interactions)
   T = nx.minimum_spanning_tree(G)

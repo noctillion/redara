@@ -62,12 +62,15 @@ export const FocusGraphDos = () => {
   const [searchName, setSearchName] = useState("");
   console.log(searchName, "searchName");
   console.log(nodeAmount, "nodeAmount");
-  const [busqueda, setBusqueda] = useState(["MDHAR"]);
-  const [search, setSearch] = useState(false);
+  const [busqueda, setBusqueda] = useState([""]);
+  const [search, setSearch] = useState(4);
+  const [busqueda2, setBusqueda2] = useState(["TF_ID"]);
+  const [busqueda3, setBusqueda3] = useState([]);
+  console.log(busqueda3, "busqueda3");
 
-  /*  let call = useCallback(() => {
-    fgRef.current.refresh();
-  }, [fgRef]); */
+  const [autoresLista, setAutoresLista] = useState([]);
+  const [toglMult, setToglMult] = useState(false);
+  const [toglMult2, setToglMult2] = useState(false);
 
   const [query, setQuery] = useState([]);
   console.log(query, "matches");
@@ -136,6 +139,7 @@ export const FocusGraphDos = () => {
           group: node.groupQuery,
         };
       });
+      console.log(nodNet, "nodeNet");
 
       const key = "group";
 
@@ -252,6 +256,16 @@ export const FocusGraphDos = () => {
       console.log(newColors, "newColors");
 
       setColors(newColors);
+
+      let autoresTmp = Object.keys(forManipulation.nodes[0].orgData.author);
+      let autores = autoresTmp.map((item, index) => {
+        return {
+          color: rainbow(autoresTmp.length, 11 + index),
+          id: index,
+          label: item,
+        };
+      });
+      setAutoresLista(autores);
     }
   }, [forManipulation]);
 
@@ -394,13 +408,67 @@ export const FocusGraphDos = () => {
     [busqueda]
   );
 
-  const handleClickNode = () => {
+  const getNodesByList = useCallback(
+    (node) => {
+      for (let i = 0; i < busqueda2.length; i++) {
+        if (node.orgData.author[busqueda2[i].label] === 1) {
+          return busqueda2[i].color;
+        }
+      }
+    },
+    [busqueda2]
+  );
+
+  const sequencialFilter = useCallback(
+    (node) => {
+      for (let i = 0; i < busqueda3.length; i++) {
+        if (node.orgData.author[busqueda3[i].label] === 1) {
+          return busqueda3[i].color;
+        }
+      }
+    },
+    [busqueda3]
+  );
+
+  /*   const handleClickNode = () => {
     setSearch(!search);
+  }; */
+
+  const handleClickNode = () => {
+    setSearch(1);
+  };
+
+  const handleClickNode2 = () => {
+    setSearch(4);
+    setToglMult(false);
+  };
+
+  const handleClickNode3List = (autor) => {
+    setBusqueda2([autor]);
+    console.log("object", autor);
+  };
+
+  const handleClickNode4List = (autor) => {
+    //setMyArray(oldArray => [...oldArray, newElement]);
+    setBusqueda3((busqueda3) => [...busqueda3, autor]);
+    console.log("object", autor);
+  };
+
+  const handleClickNode3 = () => {
+    setSearch(3);
+    setToglMult(!toglMult);
+  };
+
+  // sequencial filter
+  const handleClickNode4 = () => {
+    setSearch(5);
+    setBusqueda3([]);
+    setToglMult2(!toglMult2);
   };
 
   const handleSearch = (event) => {
-    let value = event.target.value.toLowerCase();
-    setBusqueda([value]);
+    let value = event.target.value.toLowerCase().replace(/\s/g, "").split(",");
+    setBusqueda(value);
   };
 
   /* 
@@ -445,6 +513,21 @@ export const FocusGraphDos = () => {
     setPrunedTree(getPrunedTree());
   }, [hiddenClusters, getPrunedTree]);
  */
+
+  let change = () => {
+    if (search === 4) {
+      return handleNodeColor;
+    }
+    if (search === 3) {
+      return getNodesByList;
+    }
+    if (search === 1) {
+      return getNodeEsp;
+    }
+    if (search === 5) {
+      return sequencialFilter;
+    }
+  };
   return (
     <>
       <div
@@ -474,7 +557,8 @@ export const FocusGraphDos = () => {
               nodeOpacity={nodeAmount}
               //nodeColor={(node) => (node.id === "HSP101" ? "orange" : "white")}
               //nodeColor={handleNodeColor}
-              nodeColor={search ? getNodeEsp : handleNodeColor}
+              //nodeColor={search ? getNodeEsp : handleNodeColor}
+              nodeColor={change()}
               nodeVal={(node) => node.node_size1 / 800}
               //nodeColor="#ff0000"
               //nodeColor={(node) => console.log(node.node_colorA)}
@@ -525,7 +609,96 @@ export const FocusGraphDos = () => {
                 onChange={onChangeHandler}
               />
               <SearchBar placeholder="Search" onChange={handleSearch} />
-              <button onClick={handleClickNode}>Search</button>
+              <button onClick={handleClickNode}>Modo search</button>
+              <br />
+              <button onClick={handleClickNode2}>Default</button>
+              <br />
+              <button onClick={handleClickNode3}>Algoen3</button>
+              {toglMult ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      width: "fit-content",
+                    }}
+                  >
+                    {autoresLista.map((autor) => {
+                      return (
+                        <div
+                          style={{
+                            display: "flex",
+                            marginTop: "5px",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <button
+                            style={{ marginRight: "10px", width: "100%" }}
+                            key={autor.id}
+                            onClick={() => handleClickNode3List(autor)}
+                          >
+                            {autor.label}
+                          </button>
+                          <div
+                            style={{
+                              backgroundColor: autor.color,
+                              width: "50px",
+                              height: "15",
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          ></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : null}
+
+              <br />
+              <button onClick={handleClickNode4}>ProgresiveFilt</button>
+              {toglMult2 ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      width: "fit-content",
+                    }}
+                  >
+                    {autoresLista.map((autor) => {
+                      return (
+                        <div
+                          style={{
+                            display: "flex",
+                            marginTop: "5px",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <button
+                            style={{ marginRight: "10px", width: "100%" }}
+                            key={autor.id}
+                            onClick={() => handleClickNode4List(autor)}
+                          >
+                            {autor.label}
+                          </button>
+                          <div
+                            style={{
+                              backgroundColor: autor.color,
+                              width: "50px",
+                              height: "15",
+                              display: "flex",
+                              justifyContent: "flex-end",
+                            }}
+                          ></div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : null}
             </div>
 
             <div

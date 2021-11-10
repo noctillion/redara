@@ -21,6 +21,7 @@ function App() {
   const [forNewNet, setForNewNet] = useState({});
 
   console.log(forNewNet, "forNewNetiiiiiiinnnterrrrrr");
+  //console.log(JSON.stringify(forNewNet), "forNewnet");
   //console.log(consolidated, "consolidated");
   //console.log(filteredR, "RRRRinterselectRRRRR");
   let setDataToProviderClicked = (forState) => {

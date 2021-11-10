@@ -162,10 +162,10 @@ def searchDic(dic,name):
     if the_key == name:
       return the_value
 
-def groupDict(loquwserecibeV2):
+def groupDict(loquwserecibeV2,field):
   alist=[]
   for i in range(len(loquwserecibeV2)):
-    tempH = loquwserecibeV2[i]['authQuery']
+    tempH = loquwserecibeV2[i][field]##'authQuery'
     nvas = {key: value for key, value in tempH.items() if value}
     nvasSt = keys = "_".join(list(nvas.keys()))
     alist.append(nvasSt)
@@ -197,7 +197,16 @@ def finalArrayNod(elh,loquwserecibeV2,dic,dicGroups):
 
       group2 = searchDic(dicGroups,tempElemT["groupQuery"])
       insert_item(tempElemT, item={'group': group2})
-    ##
+    ## add group background author
+      nvasB = {key: value for key, value in vas['author'].items() if value}
+      nvasStB = keys = "_".join(list(nvasB.keys()))
+      insert_item(tempElemT, item={'groupBackground': nvasStB})
+
+      group2B = searchDic(dicGroups,tempElemT["groupBackground"])
+      insert_item(tempElemT, item={'group2': group2B})
+    
+    
+    
     finalArrayNode.append(tempElemT)
   return(finalArrayNode)
 
